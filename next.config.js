@@ -7,4 +7,4 @@ const nextConfig = {
   assetPrefix: isProd ? '/portfolio/' : '', // Update the base path for GitHub Pages
 };
 
-export default nextConfig;
+module.exports = nextConfig;
