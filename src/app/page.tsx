@@ -1,26 +1,19 @@
 "use client"
 
 import Image from "next/image";
+import { memo } from "react";
+
 import styles from "./page.module.css";
 
-let filePathPrefix: string;
 
-try {
-  filePathPrefix = window.location.origin.includes("localhost") ? "" : "/portfolio"
-} catch (error) {
-  console.error(error)
-  filePathPrefix = ""
-}
-
-console.log("filePathPrefix => ", filePathPrefix);
-
-export default function Home() {
+function Home() {
+  
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <Image
           className={styles.logo}
-          src={`${filePathPrefix}/next.svg`}
+          src={`/next.svg`}
           alt="Next.js logo"
           width={180}
           height={38}
@@ -42,7 +35,7 @@ export default function Home() {
           >
             <Image
               className={styles.logo}
-              src={`${filePathPrefix}/vercel.svg`}
+              src={`/vercel.svg`}
               alt="Vercel logomark"
               width={20}
               height={20}
@@ -67,7 +60,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src={`${filePathPrefix}/file.svg`}
+            src={`/file.svg`}
             alt="File icon"
             width={16}
             height={16}
@@ -81,7 +74,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src={`${filePathPrefix}/window.svg`}
+            src={`/window.svg`}
             alt="Window icon"
             width={16}
             height={16}
@@ -95,7 +88,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src={`${filePathPrefix}/globe.svg`}
+            src={`/globe.svg`}
             alt="Globe icon"
             width={16}
             height={16}
@@ -106,3 +99,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default memo(Home);

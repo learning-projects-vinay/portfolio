@@ -103,7 +103,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next-env.d.ts",
-    "next.config.js",
+    "next.config.ts",
     "dist/types/**/*.ts"
   ],
   "exclude": [
