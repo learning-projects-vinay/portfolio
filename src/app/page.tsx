@@ -5,15 +5,25 @@ import { memo } from "react";
 
 import styles from "./page.module.css";
 
+let filePathPrefix: string;
+
 
 function Home() {
+  try {
+    filePathPrefix = window.location.origin.includes("localhost") ? "" : "/portfolio"
+  } catch (error) {
+    console.error(error)
+    filePathPrefix = ""
+  }
   
+  console.log("filePathPrefix => ", filePathPrefix);
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <Image
           className={styles.logo}
-          src={`/next.svg`}
+          src={`${filePathPrefix}/next.svg`}
           alt="Next.js logo"
           width={180}
           height={38}
@@ -35,7 +45,7 @@ function Home() {
           >
             <Image
               className={styles.logo}
-              src={`/vercel.svg`}
+              src={`${filePathPrefix}/vercel.svg`}
               alt="Vercel logomark"
               width={20}
               height={20}
@@ -60,7 +70,7 @@ function Home() {
         >
           <Image
             aria-hidden
-            src={`/file.svg`}
+            src={`${filePathPrefix}/file.svg`}
             alt="File icon"
             width={16}
             height={16}
@@ -74,7 +84,7 @@ function Home() {
         >
           <Image
             aria-hidden
-            src={`/window.svg`}
+            src={`${filePathPrefix}/window.svg`}
             alt="Window icon"
             width={16}
             height={16}
@@ -88,7 +98,7 @@ function Home() {
         >
           <Image
             aria-hidden
-            src={`/globe.svg`}
+            src={`${filePathPrefix}/globe.svg`}
             alt="Globe icon"
             width={16}
             height={16}
