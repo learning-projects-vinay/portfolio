@@ -1,29 +1,27 @@
 "use client"
 
 import Image from "next/image";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 
 import styles from "./page.module.css";
 
-let filePathPrefix: string;
 
 
 function Home() {
-  try {
-    filePathPrefix = window.location.origin.includes("localhost") ? "" : "/portfolio"
-  } catch (error) {
-    console.error(error)
-    filePathPrefix = ""
-  }
+  const [assetRoutePrefix, setAssetRoutePrefix] = useState<string>("");
+
+  useEffect(() => {
+    setAssetRoutePrefix(window.location.origin.includes("localhost") ? "" : "/portfolio");
+    console.log("assetRoutPrefix => ", assetRoutePrefix);
+  }, [assetRoutePrefix, setAssetRoutePrefix]);
   
-  console.log("filePathPrefix => ", filePathPrefix);
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <Image
           className={styles.logo}
-          src={`${filePathPrefix}/next.svg`}
+          src={`/portfolio/next.svg`}
           alt="Next.js logo"
           width={180}
           height={38}
@@ -45,7 +43,7 @@ function Home() {
           >
             <Image
               className={styles.logo}
-              src={`${filePathPrefix}/vercel.svg`}
+              src={`/portfolio/vercel.svg`}
               alt="Vercel logomark"
               width={20}
               height={20}
@@ -70,7 +68,7 @@ function Home() {
         >
           <Image
             aria-hidden
-            src={`${filePathPrefix}/file.svg`}
+            src={`/portfolio/file.svg`}
             alt="File icon"
             width={16}
             height={16}
@@ -84,7 +82,7 @@ function Home() {
         >
           <Image
             aria-hidden
-            src={`${filePathPrefix}/window.svg`}
+            src={`/portfolio/window.svg`}
             alt="Window icon"
             width={16}
             height={16}
@@ -98,7 +96,7 @@ function Home() {
         >
           <Image
             aria-hidden
-            src={`${filePathPrefix}/globe.svg`}
+            src={`/portfolio/globe.svg`}
             alt="Globe icon"
             width={16}
             height={16}

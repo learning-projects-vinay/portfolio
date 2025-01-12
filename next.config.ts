@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   /* config options here */  
   output: 'export', // Export as a static site
   basePath: isProd ? '/portfolio' : '',
+  assetPrefix: isProd ? '/portfolio/' : '',
 };
 
 export default nextConfig;
