@@ -1,27 +1,21 @@
 "use client"
 
 import Image from "next/image";
-import { memo, useEffect, useState } from "react";
+import { memo } from "react";
 
+import dotEnv from "../components/config/dotEnv";
 import styles from "./page.module.css";
 
 
 
 function Home() {
-  const [assetRoutePrefix, setAssetRoutePrefix] = useState<string>("");
-
-  useEffect(() => {
-    setAssetRoutePrefix(window.location.origin.includes("localhost") ? "" : "/portfolio");
-    console.log("assetRoutPrefix => ", assetRoutePrefix);
-  }, [assetRoutePrefix, setAssetRoutePrefix]);
   
-
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <Image
           className={styles.logo}
-          src={`/portfolio/next.svg`}
+          src={`${dotEnv.PUBLIC_ASSET_PREFIX}/next.svg`}
           alt="Next.js logo"
           width={180}
           height={38}
@@ -43,7 +37,7 @@ function Home() {
           >
             <Image
               className={styles.logo}
-              src={`/portfolio/vercel.svg`}
+              src={`${dotEnv.PUBLIC_ASSET_PREFIX}/vercel.svg`}
               alt="Vercel logomark"
               width={20}
               height={20}
@@ -68,7 +62,7 @@ function Home() {
         >
           <Image
             aria-hidden
-            src={`/portfolio/file.svg`}
+            src={`${dotEnv.PUBLIC_ASSET_PREFIX}/file.svg`}
             alt="File icon"
             width={16}
             height={16}
@@ -82,7 +76,7 @@ function Home() {
         >
           <Image
             aria-hidden
-            src={`/portfolio/window.svg`}
+            src={`${dotEnv.PUBLIC_ASSET_PREFIX}/window.svg`}
             alt="Window icon"
             width={16}
             height={16}
@@ -96,7 +90,7 @@ function Home() {
         >
           <Image
             aria-hidden
-            src={`/portfolio/globe.svg`}
+            src={`${dotEnv.PUBLIC_ASSET_PREFIX}/globe.svg`}
             alt="Globe icon"
             width={16}
             height={16}
