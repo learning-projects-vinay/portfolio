@@ -1,103 +1,50 @@
 "use client"
 
-import Image from "next/image";
+import { Box, Container, Typography } from "@mui/material";
 import { memo } from "react";
-
-import dotEnv from "../components/config/dotEnv";
-import styles from "./page.module.css";
-
-
+import dotEnv from "../config/dotEnv";
 
 function Home() {
-  
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src={`${dotEnv.PUBLIC_ASSET_PREFIX}/next.svg`}
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src={`${dotEnv.PUBLIC_ASSET_PREFIX}/vercel.svg`}
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+  console.log("dotEnv.PUBLIC_ASSET_PREFIX => ", dotEnv.PUBLIC_ASSET_PREFIX);
+
+  return (
+    <div style={{ padding: "0px", margin: "0px"} }>
+      {/* First Container with Image and Name */}
+      <Box
+        sx={{
+          height: '70vh', // 40% of the viewport height
+          width: '100%',
+          backgroundImage: `url("${dotEnv.APP_URL}${dotEnv.PUBLIC_ASSET_PREFIX}/images/home/background.jpg")`, // Replace with your image path
+          backgroundSize: 'cover', // Ensure the image covers the container
+          backgroundPosition: 'center', // Center the image
+          position: 'relative', // Position the text relative to the image container
+          padding: "0px",
+          margin: "0px"
+        }}
+
+      >{/* Name Text aligned to left and bottom */}
+        <Typography
+          variant="h3"
+          sx={{
+            position: 'absolute',
+            bottom: '10px', // Adjust to control vertical positioning
+            left: '10px', // Adjust to control horizontal positioning
+            color: 'white', // Text color
+            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', // Add a shadow for readability
+          }}
         >
-          <Image
-            aria-hidden
-            src={`${dotEnv.PUBLIC_ASSET_PREFIX}/file.svg`}
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src={`${dotEnv.PUBLIC_ASSET_PREFIX}/window.svg`}
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src={`${dotEnv.PUBLIC_ASSET_PREFIX}/globe.svg`}
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          Your Name
+        </Typography>
+      </Box>
+
+      {/* Rest of the Content */}
+      <Container sx={{ mt: 5 }}>
+        <Typography variant="h5" align="center">
+          Welcome to My Portfolio
+        </Typography>
+        {/* Additional Content Goes Here */}
+      </Container>
     </div>
   );
 }
