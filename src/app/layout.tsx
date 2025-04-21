@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: '/images/vinay_favicon.ico',
+        url: `${process.env.NEXT_PUBLIC_ASSET_PREFIX}/images/vinay_favicon.ico`,
         sizes: 'any',
       },
       {

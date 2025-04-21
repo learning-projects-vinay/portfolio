@@ -109,7 +109,7 @@ const Hero = () => {
               }}
             >
               <Image
-                src="/images/IMG-20220117-WA0003.jpg"
+                src={`${process.env.NEXT_PUBLIC_ASSET_PREFIX}/images/IMG-20220117-WA0003.jpg`}
                 alt="Vinay Panwar"
                 layout="fill"
                 objectFit="cover"
