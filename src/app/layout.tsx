@@ -1,47 +1,54 @@
-import { Box, Container } from '@mui/material';
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import React from 'react';
-
-import { CustomAppBar, MainFooter } from '../components';
+import { Raleway, Open_Sans } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const raleway = Raleway({ 
   subsets: ["latin"],
+  variable: '--font-raleway',
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const openSans = Open_Sans({
   subsets: ["latin"],
+  variable: '--font-opensans',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
   title: "Portfolio",
-  description: "Here's your journey start to get to know me.",
+  description: "Personal portfolio website",
+  icons: {
+    icon: [
+      {
+        url: '/images/vinay_favicon.ico',
+        sizes: 'any',
+      },
+      {
+        url: '/icon.png',
+        type: 'image/png',
+        sizes: '32x32',
+      },
+    ],
+    apple: [
+      {
+        url: '/apple-icon.png',
+        sizes: '180x180',
+        type: 'image/png',
+      },
+    ],
+  },
 };
-const RootLayout = ({ children }: Readonly<{
+
+export default function RootLayout({
+  children,
+}: {
   children: React.ReactNode;
-}>) => {
+}) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {/* AppBar (Header with Navigation Buttons) */}
-        <CustomAppBar />
-        <Box sx={{ marginTop: "70px" }}>
-
-          {/* Main Content Area */}
-          <Container sx={{ mt: 5 }}>
-            {children}
-          </Container>
-
-        </Box>
-        {/* Footer with Copyright */}
-        <MainFooter />
+      <body className={`${raleway.variable} ${openSans.variable} font-sans`}>
+        {children}
       </body>
-
     </html>
   );
-};
-
-export default RootLayout;
+}
