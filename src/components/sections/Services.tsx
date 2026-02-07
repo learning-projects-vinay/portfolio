@@ -50,7 +50,9 @@ export default function Services() {
       id="services"
       sx={{
         py: 10,
-        background: 'linear-gradient(180deg, #ffffff 0%, #f5f7fa 100%)',
+        background: (theme) => theme.palette.mode === 'light'
+          ? 'linear-gradient(180deg, #ffffff 0%, #f5f7fa 100%)'
+          : 'linear-gradient(180deg, #0f0f23 0%, #1a1a2e 100%)',
         position: 'relative'
       }}
     >
@@ -90,12 +92,21 @@ export default function Services() {
                   height: '100%',
                   borderRadius: 4,
                   transition: 'all 0.3s ease',
-                  background: 'white',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                  background: (theme) => theme.palette.mode === 'light'
+                    ? 'white'
+                    : 'rgba(255, 255, 255, 0.05)',
+                  boxShadow: (theme) => theme.palette.mode === 'light'
+                    ? '0 4px 20px rgba(0,0,0,0.08)'
+                    : '0 4px 20px rgba(0,0,0,0.3)',
+                  border: (theme) => theme.palette.mode === 'light'
+                    ? 'none'
+                    : '1px solid rgba(102,126,234,0.2)',
                   animation: `${fadeInUp} 0.6s ease-out ${index * 0.1}s both`,
                   '&:hover': {
                     transform: 'translateY(-10px)',
-                    boxShadow: '0 20px 40px rgba(102,126,234,0.15)',
+                    boxShadow: (theme) => theme.palette.mode === 'light'
+                      ? '0 20px 40px rgba(102,126,234,0.15)'
+                      : '0 20px 40px rgba(102,126,234,0.3)',
                     '& .service-icon': {
                       transform: 'scale(1.1) rotate(5deg)',
                       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -111,7 +122,9 @@ export default function Services() {
                     className="service-icon"
                     sx={{ 
                       mb: 3, 
-                      color: '#667eea',
+                      color: (theme) => theme.palette.mode === 'light'
+                        ? '#667eea'
+                        : '#a8b3ff',
                       transition: 'all 0.3s ease'
                     }}
                   >
@@ -122,7 +135,7 @@ export default function Services() {
                     sx={{ 
                       fontWeight: 700, 
                       mb: 2,
-                      color: '#1a202c'
+                      color: 'text.primary'
                     }}
                   >
                     {service.title}
@@ -145,11 +158,17 @@ export default function Services() {
                           px: 2,
                           py: 0.5,
                           borderRadius: 50,
-                          background: 'linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%)',
-                          border: '1px solid rgba(102,126,234,0.2)',
+                          background: (theme) => theme.palette.mode === 'light'
+                            ? 'linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%)'
+                            : 'linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.15) 100%)',
+                          border: (theme) => theme.palette.mode === 'light'
+                            ? '1px solid rgba(102,126,234,0.2)'
+                            : '1px solid rgba(102,126,234,0.3)',
                           fontSize: '0.875rem',
                           fontWeight: 500,
-                          color: '#667eea'
+                          color: (theme) => theme.palette.mode === 'light'
+                            ? '#667eea'
+                            : '#a8b3ff'
                         }}
                       >
                         {tech}

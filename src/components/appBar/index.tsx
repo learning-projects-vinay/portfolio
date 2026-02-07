@@ -33,17 +33,38 @@ const CustomAppBar = () => {
   };
 
   const drawer = (
-    <Box sx={{ width: 250 }}>
+    <Box sx={{ 
+      width: 250,
+      bgcolor: 'background.paper',
+      color: 'text.primary',
+      height: '100%'
+    }}>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 1 }}>
-        <IconButton onClick={handleDrawerToggle}>
+        <IconButton onClick={handleDrawerToggle} sx={{ color: 'text.primary' }}>
           <CloseIcon />
         </IconButton>
       </Box>
       <List>
         {navigationItems.map((item) => (
           <ListItem key={item.id} disablePadding>
-            <ListItemButton onClick={() => scrollToSection(item.id)}>
-              <ListItemText primary={item.label} />
+            <ListItemButton 
+              onClick={() => scrollToSection(item.id)}
+              sx={{ 
+                color: 'text.primary',
+                '&:hover': {
+                  bgcolor: 'action.hover'
+                }
+              }}
+            >
+              <ListItemText 
+                primary={item.label} 
+                sx={{ 
+                  '& .MuiListItemText-primary': { 
+                    color: 'text.primary',
+                    fontWeight: 600
+                  } 
+                }} 
+              />
             </ListItemButton>
           </ListItem>
         ))}
@@ -61,6 +82,7 @@ const CustomAppBar = () => {
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
+              sx={{ color: 'text.primary' }}
             >
               <MenuIcon />
             </IconButton>
@@ -83,9 +105,11 @@ const CustomAppBar = () => {
                 onClick={toggleTheme} 
                 color="inherit"
                 sx={{
+                  color: 'text.primary',
                   transition: 'all 0.3s ease',
                   '&:hover': {
-                    transform: 'rotate(180deg)'
+                    transform: 'rotate(180deg)',
+                    bgcolor: 'action.hover'
                   }
                 }}
               >
@@ -105,7 +129,12 @@ const CustomAppBar = () => {
           keepMounted: true, // Better mobile performance
         }}
         sx={{
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 250 },
+          '& .MuiDrawer-paper': { 
+            boxSizing: 'border-box', 
+            width: 250,
+            backgroundColor: 'background.paper',
+            color: 'text.primary'
+          },
         }}
       >
         {drawer}

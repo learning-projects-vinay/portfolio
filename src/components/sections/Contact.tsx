@@ -39,7 +39,9 @@ const Contact = () => {
       id="contact"
       sx={{
         py: 12,
-        background: 'linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%)',
+        background: (theme) => theme.palette.mode === 'light'
+          ? 'linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%)'
+          : 'linear-gradient(180deg, #141a3a 0%, #0a0e27 100%)',
       }}
     >
       <Container maxWidth="md">
@@ -66,10 +68,14 @@ const Contact = () => {
             sx={{
               p: 4,
               height: '100%',
-              background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
+              background: (theme) => theme.palette.mode === 'light'
+                ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)'
+                : 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
               borderRadius: 4,
               border: '2px solid',
-              borderColor: 'rgba(102, 126, 234, 0.2)',
+              borderColor: (theme) => theme.palette.mode === 'light'
+                ? 'rgba(102, 126, 234, 0.2)'
+                : 'rgba(102, 126, 234, 0.3)',
               animation: `${fadeIn} 1s ease-out`,
             }}
           >
@@ -144,10 +150,14 @@ const Contact = () => {
             elevation={0}
             sx={{
               p: 4,
-              background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
+              background: (theme) => theme.palette.mode === 'light'
+                ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)'
+                : 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
               borderRadius: 4,
               border: '2px solid',
-              borderColor: 'rgba(102, 126, 234, 0.2)',
+              borderColor: (theme) => theme.palette.mode === 'light'
+                ? 'rgba(102, 126, 234, 0.2)'
+                : 'rgba(102, 126, 234, 0.3)',
               animation: `${fadeIn} 1s ease-out 0.3s both`,
             }}
           >

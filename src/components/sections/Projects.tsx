@@ -46,7 +46,9 @@ const Projects = () => {
       id="projects"
       sx={{
         py: 12,
-        background: 'linear-gradient(180deg, #f5f7fa 0%, #ffffff 100%)',
+        background: (theme) => theme.palette.mode === 'light'
+          ? 'linear-gradient(180deg, #f5f7fa 0%, #ffffff 100%)'
+          : 'linear-gradient(180deg, #0f0f23 0%, #1a1a2e 100%)',
         position: 'relative',
         overflow: 'hidden',
         '&::before': {
@@ -103,10 +105,14 @@ const Projects = () => {
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                background: 'white',
+                background: (theme) => theme.palette.mode === 'light'
+                  ? 'white'
+                  : 'rgba(255, 255, 255, 0.05)',
                 borderRadius: 4,
                 border: '1px solid',
-                borderColor: 'rgba(102, 126, 234, 0.15)',
+                borderColor: (theme) => theme.palette.mode === 'light'
+                  ? 'rgba(102, 126, 234, 0.15)'
+                  : 'rgba(102, 126, 234, 0.3)',
                 animation: `${fadeIn} 0.8s ease-out ${index * 0.15}s both`,
                 transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                 position: 'relative',
@@ -147,8 +153,12 @@ const Projects = () => {
                     className="project-category"
                     size="small"
                     sx={{
-                      background: 'rgba(102, 126, 234, 0.1)',
-                      color: '#667eea',
+                      background: (theme) => theme.palette.mode === 'light'
+                        ? 'rgba(102, 126, 234, 0.1)'
+                        : 'rgba(102, 126, 234, 0.2)',
+                      color: (theme) => theme.palette.mode === 'light'
+                        ? '#667eea'
+                        : '#a8b3ff',
                       fontWeight: 600,
                       fontSize: '0.75rem',
                       transition: 'all 0.3s ease'
@@ -162,7 +172,7 @@ const Projects = () => {
                   sx={{ 
                     fontWeight: 700,
                     mb: 2,
-                    color: '#1a202c'
+                    color: 'text.primary'
                   }}
                 >
                   {project.title}
@@ -186,11 +196,17 @@ const Projects = () => {
                         px: 2,
                         py: 0.75,
                         borderRadius: 2,
-                        background: 'linear-gradient(135deg, rgba(102,126,234,0.08) 0%, rgba(118,75,162,0.08) 100%)',
-                        border: '1px solid rgba(102,126,234,0.15)',
+                        background: (theme) => theme.palette.mode === 'light'
+                          ? 'linear-gradient(135deg, rgba(102,126,234,0.08) 0%, rgba(118,75,162,0.08) 100%)'
+                          : 'linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.15) 100%)',
+                        border: (theme) => theme.palette.mode === 'light'
+                          ? '1px solid rgba(102,126,234,0.15)'
+                          : '1px solid rgba(102,126,234,0.3)',
                         fontSize: '0.875rem',
                         fontWeight: 500,
-                        color: '#667eea',
+                        color: (theme) => theme.palette.mode === 'light'
+                          ? '#667eea'
+                          : '#a8b3ff',
                         transition: 'all 0.2s ease'
                       }}
                     >

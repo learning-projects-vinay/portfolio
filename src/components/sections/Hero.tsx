@@ -95,7 +95,8 @@ const Hero = () => {
           right: 0,
           bottom: 0,
           zIndex: 0,
-          overflow: 'hidden'
+          overflow: 'hidden',
+          opacity: (theme) => theme.palette.mode === 'light' ? 0.3 : 0.5
         }}
       >
         <Image
@@ -104,8 +105,7 @@ const Hero = () => {
           fill
           style={{
             objectFit: 'cover',
-            objectPosition: 'center top',
-            opacity: 0.8
+            objectPosition: 'center top'
           }}
           priority
         />
@@ -117,8 +117,8 @@ const Hero = () => {
           position: 'absolute',
           inset: 0,
           background: (theme) => theme.palette.mode === 'light'
-            ? 'linear-gradient(135deg, rgba(248,249,250,0.85) 0%, rgba(233,236,239,0.85) 100%)'
-            : 'linear-gradient(135deg, rgba(15,15,35,0.82) 0%, rgba(26,26,46,0.82) 100%)',
+            ? 'linear-gradient(135deg, rgba(248,249,250,0.4) 0%, rgba(233,236,239,0.4) 100%)'
+            : 'linear-gradient(135deg, rgba(15,15,35,0.3) 0%, rgba(26,26,46,0.3) 100%)',
           zIndex: 1
         }}
       />
@@ -128,7 +128,7 @@ const Hero = () => {
         sx={{
           position: 'absolute',
           inset: 0,
-          background: 'radial-gradient(ellipse at 30% 50%, rgba(102,126,234,0.12) 0%, transparent 60%)',
+          background: 'radial-gradient(ellipse at 30% 50%, rgba(102,126,234,0.08) 0%, transparent 60%)',
           zIndex: 1
         }}
       />
@@ -235,8 +235,8 @@ const Hero = () => {
                 sx={{
                   background: (theme) => theme.palette.mode === 'light'
                     ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                    : '#c6ff00',
-                  color: (theme) => theme.palette.mode === 'light' ? 'white' : '#000',
+                    : 'linear-gradient(135deg, #8b9ff5 0%, #9668c4 100%)',
+                  color: 'white',
                   fontWeight: 700,
                   px: 4,
                   py: 1.75,
@@ -260,11 +260,11 @@ const Hero = () => {
                   '&:hover': {
                     background: (theme) => theme.palette.mode === 'light'
                       ? 'linear-gradient(135deg, #5568d3 0%, #64398a 100%)'
-                      : '#d4ff33',
+                      : 'linear-gradient(135deg, #7a8df0 0%, #8557b8 100%)',
                     transform: 'translateY(-3px)',
                     boxShadow: (theme) => theme.palette.mode === 'light'
                       ? '0 8px 25px rgba(102,126,234,0.35)'
-                      : '0 8px 25px rgba(198,255,0,0.35)',
+                      : '0 8px 25px rgba(139,159,245,0.35)',
                   },
                   '&:hover::before': {
                     left: '100%'

@@ -12,8 +12,10 @@ const MainFooter = () => {
         py: 6,
         px: 2,
         mt: 'auto',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        color: 'white',
+        background: (theme) => theme.palette.mode === 'light'
+          ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+          : 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+        color: (theme) => theme.palette.mode === 'light' ? 'white' : 'text.primary',
         position: 'relative',
       }}
     >
@@ -27,7 +29,16 @@ const MainFooter = () => {
             gap: 3,
           }}
         >
-          <Typography variant="body1" sx={{ fontWeight: 500, textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+          <Typography 
+            variant="body1" 
+            sx={{ 
+              fontWeight: 500, 
+              textShadow: (theme) => theme.palette.mode === 'light'
+                ? '0 2px 4px rgba(0,0,0,0.1)'
+                : '0 2px 4px rgba(0,0,0,0.3)',
+              color: 'inherit'
+            }}
+          >
             © {new Date().getFullYear()} Vinay Panwar. All rights reserved.
           </Typography>
           
@@ -36,13 +47,19 @@ const MainFooter = () => {
               href="https://www.linkedin.com/in/vinay-panwar-vin/"
               target="_blank"
               sx={{ 
-                color: 'white',
-                bgcolor: 'rgba(255,255,255,0.1)',
+                color: (theme) => theme.palette.mode === 'light' ? 'white' : 'text.primary',
+                bgcolor: (theme) => theme.palette.mode === 'light'
+                  ? 'rgba(255,255,255,0.1)'
+                  : 'rgba(102,126,234,0.1)',
                 transition: 'all 0.3s ease',
                 '&:hover': {
-                  bgcolor: 'rgba(255,255,255,0.2)',
+                  bgcolor: (theme) => theme.palette.mode === 'light'
+                    ? 'rgba(255,255,255,0.2)'
+                    : 'rgba(102,126,234,0.2)',
                   transform: 'translateY(-3px)',
-                  boxShadow: '0 5px 15px rgba(0,0,0,0.2)'
+                  boxShadow: (theme) => theme.palette.mode === 'light'
+                    ? '0 5px 15px rgba(0,0,0,0.2)'
+                    : '0 5px 15px rgba(102,126,234,0.3)'
                 }
               }}
             >
@@ -52,13 +69,19 @@ const MainFooter = () => {
               href="https://github.com/vinay-panwar"
               target="_blank"
               sx={{ 
-                color: 'white',
-                bgcolor: 'rgba(255,255,255,0.1)',
+                color: (theme) => theme.palette.mode === 'light' ? 'white' : 'text.primary',
+                bgcolor: (theme) => theme.palette.mode === 'light'
+                  ? 'rgba(255,255,255,0.1)'
+                  : 'rgba(102,126,234,0.1)',
                 transition: 'all 0.3s ease',
                 '&:hover': {
-                  bgcolor: 'rgba(255,255,255,0.2)',
+                  bgcolor: (theme) => theme.palette.mode === 'light'
+                    ? 'rgba(255,255,255,0.2)'
+                    : 'rgba(102,126,234,0.2)',
                   transform: 'translateY(-3px)',
-                  boxShadow: '0 5px 15px rgba(0,0,0,0.2)'
+                  boxShadow: (theme) => theme.palette.mode === 'light'
+                    ? '0 5px 15px rgba(0,0,0,0.2)'
+                    : '0 5px 15px rgba(102,126,234,0.3)'
                 }
               }}
             >
@@ -67,13 +90,19 @@ const MainFooter = () => {
             <IconButton
               href="mailto:vinaypanwar280@gmail.com"
               sx={{ 
-                color: 'white',
-                bgcolor: 'rgba(255,255,255,0.1)',
+                color: (theme) => theme.palette.mode === 'light' ? 'white' : 'text.primary',
+                bgcolor: (theme) => theme.palette.mode === 'light'
+                  ? 'rgba(255,255,255,0.1)'
+                  : 'rgba(102,126,234,0.1)',
                 transition: 'all 0.3s ease',
                 '&:hover': {
-                  bgcolor: 'rgba(255,255,255,0.2)',
+                  bgcolor: (theme) => theme.palette.mode === 'light'
+                    ? 'rgba(255,255,255,0.2)'
+                    : 'rgba(102,126,234,0.2)',
                   transform: 'translateY(-3px)',
-                  boxShadow: '0 5px 15px rgba(0,0,0,0.2)'
+                  boxShadow: (theme) => theme.palette.mode === 'light'
+                    ? '0 5px 15px rgba(0,0,0,0.2)'
+                    : '0 5px 15px rgba(102,126,234,0.3)'
                 }
               }}
             >
