@@ -90,7 +90,7 @@ const About = () => {
                 Email:
               </Typography>
               <Typography variant="body1" color="text.primary">
-                vinaypanwar9171@gmail.com
+                vinaypanwar280@gmail.com
               </Typography>
             </Box>
             <Box>
