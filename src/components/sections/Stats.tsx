@@ -183,7 +183,7 @@ export default function Stats() {
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <StatCard
               icon={<WorkIcon />}
-              value={2}
+              value={3}
               suffix="+"
               label="Years Experience"
               delay={0}
