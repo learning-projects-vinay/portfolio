@@ -15,12 +15,15 @@ const openSans = Open_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio",
-  description: "Personal portfolio website",
+  title: "Vinay Panwar | Software Developer",
+  description: "Software Developer with experience in building web applications, APIs, and cloud-based solutions. Specialized in Node.js, React, Azure, and modern web technologies.",
+  keywords: ["Software Developer", "Web Developer", "Node.js", "React", "Azure", "TypeScript", "Full Stack Developer", "Vinay Panwar"],
+  authors: [{ name: "Vinay Panwar" }],
+  creator: "Vinay Panwar",
   icons: {
     icon: [
       {
-        url: `${process.env.NEXT_PUBLIC_ASSET_PREFIX}/images/vinay_favicon.ico`,
+        url: `${process.env.NEXT_PUBLIC_ASSET_PREFIX || ''}/images/vinay_favicon.ico`,
         sizes: 'any',
       },
       {

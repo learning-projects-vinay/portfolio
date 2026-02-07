@@ -1,10 +1,13 @@
 "use client"
 
 import { memo, useState } from "react"
-import { Toolbar, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText, Box } from '@mui/material';
+import { Toolbar, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText, Box, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { CustomMuiAppBar, MenuNavigateButton } from "./appBar.style";
+import { useThemeMode } from '../../contexts/ThemeContext';
 
 const navigationItems = [
   { id: 'home', label: 'Home' },
@@ -17,6 +20,7 @@ const navigationItems = [
 
 const CustomAppBar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { mode, toggleTheme } = useThemeMode();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -71,6 +75,23 @@ const CustomAppBar = () => {
                 {item.label}
               </MenuNavigateButton>
             ))}
+          </Box>
+
+          <Box sx={{ position: 'absolute', right: 16 }}>
+            <Tooltip title={mode === 'light' ? 'Dark mode' : 'Light mode'}>
+              <IconButton 
+                onClick={toggleTheme} 
+                color="inherit"
+                sx={{
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'rotate(180deg)'
+                  }
+                }}
+              >
+                {mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+              </IconButton>
+            </Tooltip>
           </Box>
         </Toolbar>
       </CustomMuiAppBar>

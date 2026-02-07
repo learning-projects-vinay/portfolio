@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   output: 'export', // Export as a static site
   basePath: isProd ? '/portfolio' : '',
   assetPrefix: isProd ? '/portfolio/' : '',
+  images: {
+    unoptimized: true, // Required for static export
+  },
 };
 
 export default nextConfig;

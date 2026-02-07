@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Box, Container, Typography, TextField, Button, Card } from '@mui/material';
-import { LinkedIn, GitHub, Email } from '@mui/icons-material';
+import { LinkedIn, GitHub, Email, Phone } from '@mui/icons-material';
 import { keyframes } from '@mui/system';
 
 const fadeIn = keyframes`
@@ -38,16 +38,20 @@ const Contact = () => {
     <Box
       id="contact"
       sx={{
-        py: 10,
-        backgroundColor: 'background.default',
+        py: 12,
+        background: 'linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%)',
       }}
     >
       <Container maxWidth="md">
         <Typography
           variant="h2"
           textAlign="center"
-          color="primary"
-          sx={{ mb: 6 }}
+          sx={{ 
+            mb: 8,
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
         >
           Get In Touch
         </Typography>
@@ -58,16 +62,21 @@ const Contact = () => {
           gap: 6
         }}>
           <Card
+            elevation={0}
             sx={{
               p: 4,
               height: '100%',
+              background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
+              borderRadius: 4,
+              border: '2px solid',
+              borderColor: 'rgba(102, 126, 234, 0.2)',
               animation: `${fadeIn} 1s ease-out`,
             }}
           >
-            <Typography variant="h3" color="primary" gutterBottom sx={{ fontSize: '1.75rem' }}>
+            <Typography variant="h3" sx={{ fontSize: '1.75rem', mb: 2, fontWeight: 700, color: 'primary.main' }}>
               Contact Information
             </Typography>
-            <Typography variant="body1" paragraph sx={{ mb: 4 }}>
+            <Typography variant="body1" paragraph sx={{ mb: 4, color: 'text.secondary', lineHeight: 1.8 }}>
               Feel free to reach out to me for any questions or opportunities. I&apos;ll get back to you as soon as possible.
             </Typography>
             
@@ -75,10 +84,40 @@ const Contact = () => {
               <Button
                 variant="outlined"
                 color="primary"
+                startIcon={<Email />}
+                href="mailto:vinaypanwar280@gmail.com"
+                sx={{ 
+                  justifyContent: 'flex-start',
+                  borderWidth: 2,
+                  '&:hover': { borderWidth: 2 }
+                }}
+              >
+                vinaypanwar280@gmail.com
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                startIcon={<Phone />}
+                href="tel:+919171307112"
+                sx={{ 
+                  justifyContent: 'flex-start',
+                  borderWidth: 2,
+                  '&:hover': { borderWidth: 2 }
+                }}
+              >
+                +91 9171307112
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
                 startIcon={<LinkedIn />}
                 href="https://www.linkedin.com/in/vinay-panwar-vin/"
                 target="_blank"
-                sx={{ justifyContent: 'flex-start' }}
+                sx={{ 
+                  justifyContent: 'flex-start',
+                  borderWidth: 2,
+                  '&:hover': { borderWidth: 2 }
+                }}
               >
                 LinkedIn Profile
               </Button>
@@ -88,18 +127,13 @@ const Contact = () => {
                 startIcon={<GitHub />}
                 href="https://github.com/vinay-panwar"
                 target="_blank"
-                sx={{ justifyContent: 'flex-start' }}
+                sx={{ 
+                  justifyContent: 'flex-start',
+                  borderWidth: 2,
+                  '&:hover': { borderWidth: 2 }
+                }}
               >
                 GitHub Profile
-              </Button>
-              <Button
-                variant="outlined"
-                color="primary"
-                startIcon={<Email />}
-                href="mailto:vinaypanwar280@gmail.com"
-                sx={{ justifyContent: 'flex-start' }}
-              >
-                vinaypanwar280@gmail.com
               </Button>
             </Box>
           </Card>
@@ -107,12 +141,17 @@ const Contact = () => {
           <Card
             component="form"
             onSubmit={handleSubmit}
+            elevation={0}
             sx={{
               p: 4,
+              background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
+              borderRadius: 4,
+              border: '2px solid',
+              borderColor: 'rgba(102, 126, 234, 0.2)',
               animation: `${fadeIn} 1s ease-out 0.3s both`,
             }}
           >
-            <Typography variant="h3" color="primary" gutterBottom sx={{ fontSize: '1.75rem' }}>
+            <Typography variant="h3" sx={{ fontSize: '1.75rem', mb: 3, fontWeight: 700, color: 'primary.main' }}>
               Send a Message
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
