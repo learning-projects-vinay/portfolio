@@ -1,0 +1,13 @@
+name = "vinay-ask-ai"
+main = "src/index.ts"
+compatibility_date = "2026-08-01"
+
+[vars]
+# Comma-separated list of origins allowed to call this worker.
+ALLOWED_ORIGINS = "https://learning-projects-vinay.github.io,http://localhost:3000"
+# Claude model used for answers. Haiku keeps a public widget cheap;
+# switch to "claude-opus-5" for maximum answer quality.
+MODEL = "claude-haiku-4-5"
+
+# Secret (set once, never committed):
+#   npx wrangler secret put ANTHROPIC_API_KEY

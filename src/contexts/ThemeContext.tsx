@@ -11,20 +11,26 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  mode: 'light',
+  mode: 'dark',
   toggleTheme: () => {},
 });
 
 export const useThemeMode = () => useContext(ThemeContext);
 
+export const fonts = {
+  display: 'var(--font-grotesk), "Inter", "Helvetica", sans-serif',
+  body: 'var(--font-inter), "Helvetica", "Arial", sans-serif',
+  mono: 'var(--font-mono), "Menlo", "Courier New", monospace',
+};
+
 export default function ThemeContextProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = useState<ThemeMode>('light');
+  const [mode, setMode] = useState<ThemeMode>('dark');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const savedMode = localStorage.getItem('themeMode') as ThemeMode;
-    if (savedMode) {
+    const savedMode = localStorage.getItem('themeMode') as ThemeMode | null;
+    if (savedMode === 'light' || savedMode === 'dark') {
       setMode(savedMode);
     }
   }, []);
@@ -37,91 +43,105 @@ export default function ThemeContextProvider({ children }: { children: React.Rea
     });
   };
 
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-          primary: {
-            main: mode === 'light' ? '#667eea' : '#8b9ff5',
-            light: mode === 'light' ? '#8b9ff5' : '#667eea',
-            dark: mode === 'light' ? '#5568d3' : '#4a5fc7',
-          },
-          secondary: {
-            main: mode === 'light' ? '#764ba2' : '#9668c4',
-            light: mode === 'light' ? '#9668c4' : '#764ba2',
-            dark: mode === 'light' ? '#64398a' : '#5c3a7f',
-          },
-          background: {
-            default: mode === 'light' ? '#ffffff' : '#0a0e27',
-            paper: mode === 'light' ? '#ffffff' : '#141a3a',
-          },
-          text: {
-            primary: mode === 'light' ? '#1a202c' : '#f7fafc',
-            secondary: mode === 'light' ? '#718096' : '#a0aec0',
-          },
+  const theme = useMemo(() => {
+    const dark = mode === 'dark';
+
+    return createTheme({
+      palette: {
+        mode,
+        primary: {
+          main: dark ? '#8B96FA' : '#4F46E5',
+          light: dark ? '#ADB6FF' : '#6366F1',
+          dark: dark ? '#6470E8' : '#4338CA',
+          contrastText: dark ? '#12151C' : '#FFFFFF',
         },
-        typography: {
-          fontFamily: '"Raleway", "Open Sans", "Roboto", "Arial", sans-serif',
-          h1: {
-            fontFamily: '"Raleway", sans-serif',
-            fontWeight: 700,
-          },
-          h2: {
-            fontFamily: '"Raleway", sans-serif',
-            fontWeight: 700,
-          },
-          h3: {
-            fontFamily: '"Raleway", sans-serif',
-            fontWeight: 700,
-          },
-          h4: {
-            fontFamily: '"Raleway", sans-serif',
-            fontWeight: 600,
-          },
-          h5: {
-            fontFamily: '"Raleway", sans-serif',
-            fontWeight: 600,
-          },
-          h6: {
-            fontFamily: '"Raleway", sans-serif',
-            fontWeight: 600,
-          },
-          body1: {
-            fontFamily: '"Open Sans", sans-serif',
-          },
-          body2: {
-            fontFamily: '"Open Sans", sans-serif',
-          },
+        success: {
+          main: dark ? '#34D399' : '#059669',
         },
-        shape: {
-          borderRadius: 12,
+        background: {
+          default: dark ? '#12151C' : '#F4F5F7',
+          paper: dark ? '#181C25' : '#FFFFFF',
         },
-        components: {
-          MuiButton: {
-            styleOverrides: {
-              root: {
-                borderRadius: 50,
-                textTransform: 'none',
-                fontWeight: 600,
-                padding: '10px 24px',
+        text: {
+          primary: dark ? '#E4E7EE' : '#1D2433',
+          secondary: dark ? '#A3ABBD' : '#57647A',
+        },
+        divider: dark ? 'rgba(148, 163, 184, 0.16)' : 'rgba(15, 23, 42, 0.12)',
+      },
+      typography: {
+        fontFamily: fonts.body,
+        h1: {
+          fontFamily: fonts.display,
+          fontWeight: 700,
+          letterSpacing: '-0.03em',
+          lineHeight: 1.05,
+        },
+        h2: {
+          fontFamily: fonts.display,
+          fontWeight: 700,
+          letterSpacing: '-0.02em',
+          lineHeight: 1.15,
+        },
+        h3: {
+          fontFamily: fonts.display,
+          fontWeight: 600,
+          letterSpacing: '-0.01em',
+        },
+        h4: { fontFamily: fonts.display, fontWeight: 600 },
+        h5: { fontFamily: fonts.display, fontWeight: 600 },
+        h6: { fontFamily: fonts.display, fontWeight: 600 },
+        body1: { lineHeight: 1.75 },
+        body2: { lineHeight: 1.7 },
+        button: { fontWeight: 600, letterSpacing: 0 },
+      },
+      shape: {
+        borderRadius: 12,
+      },
+      components: {
+        MuiButton: {
+          styleOverrides: {
+            root: {
+              borderRadius: 10,
+              textTransform: 'none',
+              fontWeight: 600,
+              padding: '10px 22px',
+              boxShadow: 'none',
+              transition: 'all 0.2s ease',
+              '&:hover': { boxShadow: 'none' },
+            },
+            containedPrimary: {
+              '&:hover': {
+                backgroundColor: dark ? '#A5B0FF' : '#4338CA',
+              },
+            },
+            outlined: {
+              borderColor: dark ? 'rgba(148, 163, 184, 0.3)' : 'rgba(15, 23, 42, 0.2)',
+              '&:hover': {
+                borderColor: dark ? '#818CF8' : '#4F46E5',
+                backgroundColor: dark ? 'rgba(129, 140, 248, 0.08)' : 'rgba(79, 70, 229, 0.04)',
               },
             },
           },
-          MuiCard: {
-            styleOverrides: {
-              root: {
-                borderRadius: 16,
-                boxShadow: mode === 'light' 
-                  ? '0 4px 20px rgba(0,0,0,0.08)'
-                  : '0 4px 20px rgba(0,0,0,0.3)',
-              },
+        },
+        MuiCard: {
+          styleOverrides: {
+            root: {
+              borderRadius: 16,
+              boxShadow: 'none',
+              backgroundImage: 'none',
+              border: '1px solid',
+              borderColor: dark ? 'rgba(148, 163, 184, 0.14)' : 'rgba(15, 23, 42, 0.1)',
             },
           },
         },
-      }),
-    [mode]
-  );
+        MuiPaper: {
+          styleOverrides: {
+            root: { backgroundImage: 'none' },
+          },
+        },
+      },
+    });
+  }, [mode]);
 
   if (!mounted) {
     return null;

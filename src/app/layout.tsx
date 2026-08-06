@@ -1,42 +1,73 @@
 import type { Metadata } from "next";
-import { Raleway, Open_Sans } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const raleway = Raleway({ 
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: '--font-raleway',
-  display: 'swap',
+  variable: "--font-grotesk",
+  display: "swap",
 });
 
-const openSans = Open_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  variable: '--font-opensans',
-  display: 'swap',
+  variable: "--font-inter",
+  display: "swap",
 });
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
+
+const siteUrl = "https://learning-projects-vinay.github.io/portfolio";
 
 export const metadata: Metadata = {
-  title: "Vinay Panwar | Software Developer",
-  description: "Software Developer with experience in building web applications, APIs, and cloud-based solutions. Specialized in Node.js, React, Azure, and modern web technologies.",
-  keywords: ["Software Developer", "Web Developer", "Node.js", "React", "Azure", "TypeScript", "Full Stack Developer", "Vinay Panwar"],
+  metadataBase: new URL(siteUrl),
+  title: "Vinay Panwar — Senior Software Engineer · Backend & AI",
+  description:
+    "Senior Software Engineer shipping production Node.js/TypeScript backends and AI agent systems on Azure. 200+ REST APIs, event-driven architecture, LLM orchestration. Open to roles and select client work.",
+  keywords: [
+    "Vinay Panwar",
+    "Senior Software Engineer",
+    "Backend Developer",
+    "Node.js",
+    "TypeScript",
+    "Azure",
+    "AI Engineering",
+    "LLM Orchestration",
+    "AI Agents",
+    "Hire Backend Developer",
+  ],
   authors: [{ name: "Vinay Panwar" }],
   creator: "Vinay Panwar",
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    title: "Vinay Panwar — Senior Software Engineer · Backend & AI",
+    description:
+      "I build production backends and the AI systems around them. 200+ REST APIs shipped, 50% latency cuts, multi-agent LLM workflows — Node.js · TypeScript · Azure.",
+    images: [
+      {
+        url: "/images/63460.png",
+        width: 1254,
+        height: 1254,
+        alt: "Vinay Panwar",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "Vinay Panwar — Senior Software Engineer · Backend & AI",
+    description:
+      "I build production backends and the AI systems around them. Node.js · TypeScript · Azure · AI agents.",
+    images: ["/images/63460.png"],
+  },
   icons: {
     icon: [
       {
-        url: `${process.env.NEXT_PUBLIC_ASSET_PREFIX || ''}/images/vinay_favicon.ico`,
-        sizes: 'any',
-      },
-      {
-        url: '/icon.png',
-        type: 'image/png',
-        sizes: '32x32',
-      },
-    ],
-    apple: [
-      {
-        url: '/apple-icon.png',
-        sizes: '180x180',
-        type: 'image/png',
+        url: `${process.env.NEXT_PUBLIC_ASSET_PREFIX || ""}/images/vinay_favicon.ico`,
+        sizes: "any",
       },
     ],
   },
@@ -49,7 +80,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${raleway.variable} ${openSans.variable} font-sans`}>
+      <body
+        className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      >
         {children}
       </body>
     </html>

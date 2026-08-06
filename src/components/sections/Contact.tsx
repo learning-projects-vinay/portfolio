@@ -1,208 +1,137 @@
+'use client';
 import { useState } from 'react';
 import { Box, Container, Typography, TextField, Button, Card } from '@mui/material';
-import { LinkedIn, GitHub, Email, Phone } from '@mui/icons-material';
-import { keyframes } from '@mui/system';
+import { LinkedIn, GitHub, Email } from '@mui/icons-material';
+import DownloadIcon from '@mui/icons-material/Download';
+import SendIcon from '@mui/icons-material/Send';
+import { fonts } from '../../contexts/ThemeContext';
+import { profile, withPrefix } from '../../data/profile';
+import SectionHeading from '../common/SectionHeading';
+import Reveal from '../common/Reveal';
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
+const channels = [
+  { icon: <Email />, label: profile.email, href: `mailto:${profile.email}` },
+  { icon: <LinkedIn />, label: 'LinkedIn', href: profile.links.linkedin },
+  { icon: <GitHub />, label: 'GitHub', href: profile.links.github },
+];
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Static hosting (GitHub Pages) has no backend — compose the mail in the
+  // visitor's own client so every submission actually reaches the inbox.
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement form submission logic
-    console.log('Form submitted:', formData);
+    const subject = `Portfolio inquiry from ${formData.name}`;
+    const body = `${formData.message}\n\n— ${formData.name}\n${formData.email}`;
+    window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
-    <Box
-      id="contact"
-      sx={{
-        py: 12,
-        background: (theme) => theme.palette.mode === 'light'
-          ? 'linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%)'
-          : 'linear-gradient(180deg, #141a3a 0%, #0a0e27 100%)',
-      }}
-    >
-      <Container maxWidth="md">
-        <Typography
-          variant="h2"
-          textAlign="center"
-          sx={{ 
-            mb: 8,
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}
-        >
-          Get In Touch
-        </Typography>
+    <Box id="contact" sx={{ py: { xs: 10, md: 14 }, borderTop: '1px solid', borderColor: 'divider' }}>
+      <Container maxWidth="lg">
+        <SectionHeading
+          eyebrow="05 · Next step"
+          title="Let's build something that ships"
+          subtitle="Hiring for a backend or AI role? Need a system designed and delivered? Tell me what you're building — I reply within 24 hours."
+        />
 
-        <Box sx={{ 
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
-          gap: 6
-        }}>
-          <Card
-            elevation={0}
-            sx={{
-              p: 4,
-              height: '100%',
-              background: (theme) => theme.palette.mode === 'light'
-                ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)'
-                : 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
-              borderRadius: 4,
-              border: '2px solid',
-              borderColor: (theme) => theme.palette.mode === 'light'
-                ? 'rgba(102, 126, 234, 0.2)'
-                : 'rgba(102, 126, 234, 0.3)',
-              animation: `${fadeIn} 1s ease-out`,
-            }}
-          >
-            <Typography variant="h3" sx={{ fontSize: '1.75rem', mb: 2, fontWeight: 700, color: 'primary.main' }}>
-              Contact Information
-            </Typography>
-            <Typography variant="body1" paragraph sx={{ mb: 4, color: 'text.secondary', lineHeight: 1.8 }}>
-              Feel free to reach out to me for any questions or opportunities. I&apos;ll get back to you as soon as possible.
-            </Typography>
-            
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <Button
-                variant="outlined"
-                color="primary"
-                startIcon={<Email />}
-                href="mailto:vinaypanwar280@gmail.com"
-                sx={{ 
-                  justifyContent: 'flex-start',
-                  borderWidth: 2,
-                  '&:hover': { borderWidth: 2 }
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '5fr 7fr' }, gap: 4 }}>
+          <Reveal>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, height: '100%' }}>
+              <Box
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  mb: 1,
                 }}
               >
-                vinaypanwar280@gmail.com
-              </Button>
-              <Button
-                variant="outlined"
-                color="primary"
-                startIcon={<Phone />}
-                href="tel:+919171307112"
-                sx={{ 
-                  justifyContent: 'flex-start',
-                  borderWidth: 2,
-                  '&:hover': { borderWidth: 2 }
-                }}
-              >
-                +91 9171307112
-              </Button>
-              <Button
-                variant="outlined"
-                color="primary"
-                startIcon={<LinkedIn />}
-                href="https://www.linkedin.com/in/vinay-panwar-vin/"
-                target="_blank"
-                sx={{ 
-                  justifyContent: 'flex-start',
-                  borderWidth: 2,
-                  '&:hover': { borderWidth: 2 }
-                }}
-              >
-                LinkedIn Profile
-              </Button>
-              <Button
-                variant="outlined"
-                color="primary"
-                startIcon={<GitHub />}
-                href="https://github.com/vinay-panwar"
-                target="_blank"
-                sx={{ 
-                  justifyContent: 'flex-start',
-                  borderWidth: 2,
-                  '&:hover': { borderWidth: 2 }
-                }}
-              >
-                GitHub Profile
-              </Button>
-            </Box>
-          </Card>
+                <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: 'success.main' }} />
+                <Typography sx={{ fontFamily: fonts.mono, fontSize: '0.8rem', color: 'success.main' }}>
+                  {profile.availability}
+                </Typography>
+              </Box>
 
-          <Card
-            component="form"
-            onSubmit={handleSubmit}
-            elevation={0}
-            sx={{
-              p: 4,
-              background: (theme) => theme.palette.mode === 'light'
-                ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)'
-                : 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
-              borderRadius: 4,
-              border: '2px solid',
-              borderColor: (theme) => theme.palette.mode === 'light'
-                ? 'rgba(102, 126, 234, 0.2)'
-                : 'rgba(102, 126, 234, 0.3)',
-              animation: `${fadeIn} 1s ease-out 0.3s both`,
-            }}
-          >
-            <Typography variant="h3" sx={{ fontSize: '1.75rem', mb: 3, fontWeight: 700, color: 'primary.main' }}>
-              Send a Message
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-              <TextField
-                required
-                fullWidth
-                label="Name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-              />
-              <TextField
-                required
-                fullWidth
-                label="Email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-              <TextField
-                required
-                fullWidth
-                label="Message"
-                name="message"
-                multiline
-                rows={4}
-                value={formData.message}
-                onChange={handleChange}
-              />
+              {channels.map((channel) => (
+                <Button
+                  key={channel.label}
+                  variant="outlined"
+                  startIcon={channel.icon}
+                  href={channel.href}
+                  target={channel.href.startsWith('http') ? '_blank' : undefined}
+                  rel={channel.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  sx={{ justifyContent: 'flex-start', color: 'text.primary', py: 1.5 }}
+                >
+                  {channel.label}
+                </Button>
+              ))}
+
               <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                size="large"
-                sx={{ mt: 2 }}
+                variant="outlined"
+                startIcon={<DownloadIcon />}
+                component="a"
+                href={withPrefix(profile.resumePath)}
+                download="Vinay_Panwar_Resume.pdf"
+                sx={{ justifyContent: 'flex-start', color: 'text.primary', py: 1.5 }}
               >
-                Send Message
+                Download résumé (PDF)
               </Button>
+
+              <Typography sx={{ fontSize: '0.85rem', color: 'text.secondary', mt: 'auto', pt: 2 }}>
+                Based in {profile.location} · {profile.timezone} — comfortable overlapping with EU
+                and US-East hours.
+              </Typography>
             </Box>
-          </Card>
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <Card component="form" onSubmit={handleSubmit} sx={{ p: { xs: 3, md: 4 } }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2.5 }}>
+                  <TextField
+                    required
+                    fullWidth
+                    label="Name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
+                  <TextField
+                    required
+                    fullWidth
+                    label="Email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                </Box>
+                <TextField
+                  required
+                  fullWidth
+                  label="What are you building?"
+                  name="message"
+                  multiline
+                  rows={5}
+                  value={formData.message}
+                  onChange={handleChange}
+                />
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+                  <Button type="submit" variant="contained" size="large" endIcon={<SendIcon />}>
+                    Send message
+                  </Button>
+                  <Typography sx={{ fontSize: '0.82rem', color: 'text.secondary' }}>
+                    Opens your mail app, pre-filled — nothing gets lost in a fake form.
+                  </Typography>
+                </Box>
+              </Box>
+            </Card>
+          </Reveal>
         </Box>
       </Container>
     </Box>

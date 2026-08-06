@@ -1,78 +1,67 @@
 'use client';
 import { Box, Typography, Button, Container } from '@mui/material';
-// import DownloadIcon from '@mui/icons-material/Download';
-import { keyframes } from '@mui/system';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import DownloadIcon from '@mui/icons-material/Download';
 import Image from 'next/image';
+import { motion, useReducedMotion } from 'framer-motion';
+import { fonts } from '../../contexts/ThemeContext';
+import { profile, heroStats, withPrefix } from '../../data/profile';
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+};
 
-// const slideInLeft = keyframes`
-//   from {
-//     opacity: 0;
-//     transform: translateX(-50px);
-//   }
-//   to {
-//     opacity: 1;
-//     transform: translateX(0);
-//   }
-// `;
-
-// const slideInRight = keyframes`
-//   from {
-//     opacity: 0;
-//     transform: translateX(50px);
-//   }
-//   to {
-//     opacity: 1;
-//     transform: translateX(0);
-//   }
-// `;
-
-const float = keyframes`
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-`;
-
-// const pulse = keyframes`
-//   0%, 100% {
-//     transform: scale(1);
-//     opacity: 1;
-//   }
-//   50% {
-//     transform: scale(1.05);
-//     opacity: 0.8;
-//   }
-// `;
-
-// const shimmer = keyframes`
-//   0% {
-//     background-position: -1000px 0;
-//   }
-//   100% {
-//     background-position: 1000px 0;
-//   }
-// `;
+const AvailabilityBadge = () => (
+  <Box
+    sx={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 1,
+      px: 1.75,
+      py: 0.75,
+      borderRadius: 50,
+      border: '1px solid',
+      borderColor: (theme) =>
+        theme.palette.mode === 'dark' ? 'rgba(52,211,153,0.35)' : 'rgba(5,150,105,0.3)',
+      bgcolor: (theme) =>
+        theme.palette.mode === 'dark' ? 'rgba(52,211,153,0.08)' : 'rgba(5,150,105,0.06)',
+    }}
+  >
+    <Box
+      sx={{
+        width: 8,
+        height: 8,
+        borderRadius: '50%',
+        bgcolor: 'success.main',
+        '@keyframes availPulse': {
+          '0%': { boxShadow: '0 0 0 0 rgba(52,211,153,0.5)' },
+          '70%': { boxShadow: '0 0 0 7px rgba(52,211,153,0)' },
+          '100%': { boxShadow: '0 0 0 0 rgba(52,211,153,0)' },
+        },
+        animation: 'availPulse 2.4s ease-out infinite',
+      }}
+    />
+    <Typography
+      sx={{
+        fontFamily: fonts.mono,
+        fontSize: '0.78rem',
+        fontWeight: 500,
+        color: 'success.main',
+        letterSpacing: '0.02em',
+      }}
+    >
+      {profile.availability}
+    </Typography>
+  </Box>
+);
 
 const Hero = () => {
-  const stats = [
-    { value: '3+', label: 'Years of experience' },
-    { value: '200+', label: 'APIs Developed' },
-    { value: '10+', label: 'Technologies' },
-    { value: '50+', label: 'Cloud Deployments' }
-  ];
+  const reduceMotion = useReducedMotion();
+  const item = {
+    hidden: { opacity: 0, y: reduceMotion ? 0 : 24 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] as const } },
+  };
 
   return (
     <Box
@@ -83,391 +72,252 @@ const Hero = () => {
         alignItems: 'center',
         position: 'relative',
         overflow: 'hidden',
-        pt: { xs: 10, md: 0 }
+        pt: { xs: 14, md: 10 },
+        pb: { xs: 8, md: 4 },
       }}
     >
-      {/* Background Image - Bottom 95% */}
+      {/* Blueprint grid backdrop, fading out radially */}
       <Box
+        aria-hidden
         sx={{
           position: 'absolute',
-          top: '5%',
-          left: 0,
-          right: 0,
-          bottom: 0,
+          inset: 0,
           zIndex: 0,
-          overflow: 'hidden',
-          opacity: (theme) => theme.palette.mode === 'light' ? 0.3 : 0.5
+          backgroundImage: (theme) => {
+            const line =
+              theme.palette.mode === 'dark' ? 'rgba(148,163,184,0.07)' : 'rgba(15,23,42,0.05)';
+            return `linear-gradient(${line} 1px, transparent 1px), linear-gradient(90deg, ${line} 1px, transparent 1px)`;
+          },
+          backgroundSize: '56px 56px',
+          maskImage: 'radial-gradient(ellipse 90% 80% at 60% 30%, black 30%, transparent 75%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 90% 80% at 60% 30%, black 30%, transparent 75%)',
         }}
-      >
-        <Image
-          src={`${process.env.NEXT_PUBLIC_ASSET_PREFIX || ''}/images/bg-removed.png`}
-          alt="Background"
-          fill
-          style={{
-            objectFit: 'cover',
-            objectPosition: 'center top'
-          }}
-          priority
-        />
-      </Box>
-
-      {/* Gradient overlay */}
+      />
+      {/* Single soft accent glow */}
       <Box
+        aria-hidden
         sx={{
           position: 'absolute',
-          inset: 0,
-          background: (theme) => theme.palette.mode === 'light'
-            ? 'linear-gradient(135deg, rgba(248,249,250,0.4) 0%, rgba(233,236,239,0.4) 100%)'
-            : 'linear-gradient(135deg, rgba(15,15,35,0.3) 0%, rgba(26,26,46,0.3) 100%)',
-          zIndex: 1
+          top: '-15%',
+          right: '-10%',
+          width: '55vw',
+          height: '55vw',
+          maxWidth: 760,
+          maxHeight: 760,
+          borderRadius: '50%',
+          background: (theme) =>
+            theme.palette.mode === 'dark'
+              ? 'radial-gradient(circle, rgba(139,150,250,0.13) 0%, transparent 65%)'
+              : 'radial-gradient(circle, rgba(79,70,229,0.09) 0%, transparent 65%)',
+          zIndex: 0,
         }}
       />
 
-      {/* Gradient accent overlay */}
-      <Box
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(ellipse at 30% 50%, rgba(102,126,234,0.08) 0%, transparent 60%)',
-          zIndex: 1
-        }}
-      />
-
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: { xs: 'center', md: 'flex-start' },
-            justifyContent: 'center',
-            minHeight: { md: '80vh' },
-            maxWidth: { md: '700px' }
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', md: '7fr 5fr' },
+            gap: { xs: 6, md: 8 },
+            alignItems: 'center',
           }}
         >
-          {/* Content */}
-          <Box 
-            sx={{ 
-              animation: `${fadeIn} 1s ease-out`,
-              textAlign: { xs: 'center', md: 'left' },
-              px: { xs: 2, md: 0 }
-            }}
-          >
-            <Box 
-              sx={{ 
-                display: 'inline-block',
-                px: 2.5,
-                py: 0.75,
-                borderRadius: 50,
-                background: (theme) => theme.palette.mode === 'light'
-                  ? 'rgba(102,126,234,0.1)'
-                  : 'rgba(102,126,234,0.2)',
-                border: '1px solid rgba(102,126,234,0.3)',
-                mb: 3,
-                animation: `${fadeIn} 1s ease-out 0.3s both`
-              }}
-            >
-              <Typography 
-                variant="body2"
-                sx={{ 
-                  color: '#667eea',
-                  fontWeight: 600,
-                  fontSize: '0.875rem'
-                }}
-              >
-                👋 Hey I&apos;m Vinay
-              </Typography>
-            </Box>
+          {/* Left: pitch */}
+          <motion.div variants={container} initial="hidden" animate="show">
+            <motion.div variants={item}>
+              <AvailabilityBadge />
+            </motion.div>
 
-            <Typography 
-              variant="h1" 
-              sx={{
-                fontSize: { xs: '2.75rem', sm: '3.5rem', md: '4.5rem', lg: '5rem' },
-                fontWeight: 900,
-                mb: 2,
-                lineHeight: 1.1,
-                color: 'text.primary',
-                animation: `${fadeIn} 1s ease-out 0.5s both`
-              }}
-            >
-              Backend-Heavy
-              <Box 
-                component="span" 
-                sx={{ 
-                  display: 'block',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
-                }}
-              >
-                Fullstack Developer
-              </Box>
-            </Typography>
-
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                mb: 4, 
-                color: 'text.secondary',
-                fontSize: { xs: '1rem', md: '1.15rem' },
-                lineHeight: 1.7,
-                maxWidth: '550px',
-                mx: { xs: 'auto', md: 0 },
-                animation: `${fadeIn} 1s ease-out 0.7s both`
-              }}
-            >
-              Specializing in API development, cloud integration, and scalable server-side solutions with over 3 years of experience delivering enterprise-grade applications.
-            </Typography>
-
-            <Box 
-              sx={{ 
-                display: 'flex', 
-                gap: 2,
-                justifyContent: { xs: 'center', md: 'flex-start' },
-                mb: 6,
-                animation: `${fadeIn} 1s ease-out 0.9s both`
-              }}
-            >
-              <Button
-                variant="contained"
-                size="large"
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            <motion.div variants={item}>
+              <Typography
+                component="p"
                 sx={{
-                  background: (theme) => theme.palette.mode === 'light'
-                    ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                    : 'linear-gradient(135deg, #8b9ff5 0%, #9668c4 100%)',
-                  color: 'white',
-                  fontWeight: 700,
-                  px: 4,
-                  py: 1.75,
-                  borderRadius: 3,
-                  textTransform: 'none',
-                  fontSize: '1rem',
-                  boxShadow: 'none',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  transition: 'all 0.3s ease',
-                  '&::before': {
-                    content: '""',
-                    position: 'absolute',
-                    top: 0,
-                    left: '-100%',
-                    width: '100%',
-                    height: '100%',
-                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
-                    transition: 'left 0.5s ease'
-                  },
-                  '&:hover': {
-                    background: (theme) => theme.palette.mode === 'light'
-                      ? 'linear-gradient(135deg, #5568d3 0%, #64398a 100%)'
-                      : 'linear-gradient(135deg, #7a8df0 0%, #8557b8 100%)',
-                    transform: 'translateY(-3px)',
-                    boxShadow: (theme) => theme.palette.mode === 'light'
-                      ? '0 8px 25px rgba(102,126,234,0.35)'
-                      : '0 8px 25px rgba(139,159,245,0.35)',
-                  },
-                  '&:hover::before': {
-                    left: '100%'
-                  }
-                }}
-              >
-                Hire Me
-              </Button>
-              {/* <Button
-                variant="outlined"
-                size="large"
-                component="a"
-                href="/portfolio/resume.pdf"
-                download="Vinay_Panwar_Resume.pdf"
-                startIcon={<DownloadIcon />}
-                sx={{
-                  borderColor: (theme) => theme.palette.mode === 'light' ? '#667eea' : 'rgba(255,255,255,0.3)',
-                  color: (theme) => theme.palette.mode === 'light' ? '#667eea' : 'white',
-                  fontWeight: 600,
-                  px: 4,
-                  py: 1.75,
-                  borderRadius: 3,
-                  textTransform: 'none',
-                  fontSize: '1rem',
-                  borderWidth: 2,
-                  position: 'relative',
-                  overflow: 'hidden',
-                  transition: 'all 0.3s ease',
-                  '&::before': {
-                    content: '""',
-                    position: 'absolute',
-                    top: 0,
-                    left: '-100%',
-                    width: '100%',
-                    height: '100%',
-                    background: (theme) => theme.palette.mode === 'light'
-                      ? 'linear-gradient(90deg, transparent, rgba(102,126,234,0.1), transparent)'
-                      : 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)',
-                    transition: 'left 0.5s ease'
-                  },
-                  '&:hover': {
-                    borderWidth: 2,
-                    borderColor: (theme) => theme.palette.mode === 'light' ? '#5568d3' : 'white',
-                    bgcolor: (theme) => theme.palette.mode === 'light' 
-                      ? 'rgba(102,126,234,0.05)' 
-                      : 'rgba(255,255,255,0.05)',
-                    transform: 'translateY(-3px)',
-                    boxShadow: (theme) => theme.palette.mode === 'light'
-                      ? '0 6px 20px rgba(102,126,234,0.2)'
-                      : '0 6px 20px rgba(255,255,255,0.1)'
-                  },
-                  '&:hover::before': {
-                    left: '100%'
-                  }
-                }}
-              >
-                Download CV
-              </Button> */}
-            </Box>
-
-            {/* Stats with enhanced animations */}
-            <Box 
-              sx={{ 
-                display: 'grid',
-                gridTemplateColumns: 'repeat(2, 1fr)',
-                gap: 3,
-                maxWidth: '500px',
-                mx: { xs: 'auto', md: 0 },
-                animation: `${fadeIn} 1s ease-out 1.1s both`
-              }}
-            >
-              {stats.map((stat, index) => (
-                <Box 
-                  key={index}
-                  sx={{
-                    p: 2,
-                    borderRadius: 2,
-                    background: (theme) => theme.palette.mode === 'light'
-                      ? 'rgba(102,126,234,0.03)'
-                      : 'rgba(102,126,234,0.05)',
-                    border: '1px solid',
-                    borderColor: (theme) => theme.palette.mode === 'light'
-                      ? 'rgba(102,126,234,0.08)'
-                      : 'rgba(102,126,234,0.1)',
-                    transition: 'all 0.3s ease',
-                    cursor: 'default',
-                    animation: `${fadeIn} 0.6s ease-out ${1.1 + index * 0.15}s both`,
-                    '&:hover': {
-                      transform: 'translateY(-5px)',
-                      background: (theme) => theme.palette.mode === 'light'
-                        ? 'rgba(102,126,234,0.08)'
-                        : 'rgba(102,126,234,0.12)',
-                      borderColor: (theme) => theme.palette.mode === 'light'
-                        ? 'rgba(102,126,234,0.2)'
-                        : 'rgba(102,126,234,0.25)',
-                      boxShadow: (theme) => theme.palette.mode === 'light'
-                        ? '0 8px 25px rgba(102,126,234,0.15)'
-                        : '0 8px 25px rgba(102,126,234,0.25)'
-                    }
-                  }}
-                >
-                  <Typography 
-                    variant="h3" 
-                    sx={{ 
-                      fontSize: { xs: '2rem', md: '2.5rem' },
-                      fontWeight: 900,
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                      mb: 0.5
-                    }}
-                  >
-                    {stat.value}
-                  </Typography>
-                  <Typography 
-                    variant="body2" 
-                    sx={{ 
-                      color: 'text.secondary',
-                      fontSize: '0.875rem',
-                      fontWeight: 500
-                    }}
-                  >
-                    {stat.label}
-                  </Typography>
-                </Box>
-              ))}
-            </Box>
-
-          {/* Floating experience badge */}
-          <Box
-            sx={{
-              position: { xs: 'relative', md: 'absolute' },
-              top: { md: '20%' },
-              right: { md: '10%' },
-              mt: { xs: 4, md: 0 },
-              background: (theme) => theme.palette.mode === 'light'
-                ? 'rgba(255,255,255,0.95)'
-                : 'rgba(255,255,255,0.08)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-                border: (theme) => theme.palette.mode === 'light'
-                  ? '1px solid rgba(102,126,234,0.2)'
-                  : '1px solid rgba(255,255,255,0.15)',
-                borderRadius: 3,
-                p: 2,
-                boxShadow: (theme) => theme.palette.mode === 'light'
-                  ? '0 8px 32px rgba(102,126,234,0.15)'
-                  : '0 8px 32px rgba(0,0,0,0.3)',
-                zIndex: 2,
-                animation: `${fadeIn} 1s ease-out 1.3s both, ${float} 4s ease-in-out 2s infinite`,
-                transition: 'all 0.3s ease',
-                cursor: 'pointer',
-                '&:hover': {
-                  transform: 'translateY(-8px)',
-                  boxShadow: (theme) => theme.palette.mode === 'light'
-                    ? '0 12px 40px rgba(102,126,234,0.25)'
-                    : '0 12px 40px rgba(102,126,234,0.4)',
-                  border: (theme) => theme.palette.mode === 'light'
-                    ? '1px solid rgba(102,126,234,0.4)'
-                    : '1px solid rgba(102,126,234,0.5)',
-                }
-              }}
-            >
-              <Typography 
-                variant="body2" 
-                sx={{ 
+                  fontFamily: fonts.mono,
+                  fontSize: '0.82rem',
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
                   color: 'text.secondary',
-                  fontSize: '0.75rem',
-                  mb: 0.5,
-                  fontWeight: 600
+                  mt: 3,
+                  mb: 2,
                 }}
               >
-                EXP in:
+                {profile.role} — {profile.focus}
               </Typography>
-              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                {['Node.js', 'Azure', 'APIs'].map((tech, index) => (
+            </motion.div>
+
+            <motion.div variants={item}>
+              <Typography
+                variant="h1"
+                sx={{
+                  fontSize: { xs: '2.5rem', sm: '3.25rem', md: '3.8rem', lg: '4.3rem' },
+                  color: 'text.primary',
+                  mb: 3,
+                }}
+              >
+                I build production backends
+                <Box component="span" sx={{ color: 'primary.main' }}>
+                  {' '}
+                  & the AI systems{' '}
+                </Box>
+                around them.
+              </Typography>
+            </motion.div>
+
+            <motion.div variants={item}>
+              <Typography
+                variant="body1"
+                sx={{
+                  color: 'text.secondary',
+                  fontSize: { xs: '1.02rem', md: '1.12rem' },
+                  maxWidth: '540px',
+                  mb: 4,
+                }}
+              >
+                Three years shipping Node.js and TypeScript services on Azure —{' '}
+                <Box component="strong" sx={{ color: 'text.primary', fontWeight: 600 }}>
+                  200+ REST APIs
+                </Box>
+                , event-driven systems, and{' '}
+                <Box component="strong" sx={{ color: 'text.primary', fontWeight: 600 }}>
+                  multi-agent LLM workflows
+                </Box>
+                . Currently leading a team of engineers at {profile.company}.
+              </Typography>
+            </motion.div>
+
+            <motion.div variants={item}>
+              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: { xs: 5, md: 7 } }}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  endIcon={<ArrowForwardIcon />}
+                  onClick={() =>
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+                  }
+                  sx={{ px: 3.5, py: 1.5, fontSize: '1rem' }}
+                >
+                  Hire me
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  component="a"
+                  href={withPrefix(profile.resumePath)}
+                  download="Vinay_Panwar_Resume.pdf"
+                  startIcon={<DownloadIcon />}
+                  sx={{ px: 3.5, py: 1.5, fontSize: '1rem', color: 'text.primary' }}
+                >
+                  Résumé
+                </Button>
+              </Box>
+            </motion.div>
+
+            <motion.div variants={item}>
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)' },
+                  gap: { xs: 3, md: 2 },
+                  maxWidth: '620px',
+                }}
+              >
+                {heroStats.map((stat) => (
                   <Box
-                    key={tech}
-                    sx={{
-                      px: 1.5,
-                      py: 0.5,
-                      borderRadius: 2,
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                      fontSize: '0.7rem',
-                      fontWeight: 700,
-                      color: 'white',
-                      transition: 'all 0.3s ease',
-                      animation: `${fadeIn} 0.5s ease-out ${1.5 + index * 0.1}s both`,
-                      cursor: 'pointer',
-                      '&:hover': {
-                        transform: 'translateY(-3px) scale(1.05)',
-                        boxShadow: '0 6px 20px rgba(102,126,234,0.4)',
-                        background: 'linear-gradient(135deg, #5568d3 0%, #64398a 100%)'
-                      }
-                    }}
+                    key={stat.label}
+                    sx={{ borderTop: '2px solid', borderColor: 'divider', pt: 1.5 }}
                   >
-                    {tech}
+                    <Typography
+                      sx={{
+                        fontFamily: fonts.mono,
+                        fontSize: { xs: '1.4rem', md: '1.6rem' },
+                        fontWeight: 700,
+                        color: 'text.primary',
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {stat.value}
+                    </Typography>
+                    <Typography
+                      sx={{ fontSize: '0.82rem', color: 'text.secondary', lineHeight: 1.5, mt: 0.5 }}
+                    >
+                      {stat.label}
+                    </Typography>
                   </Box>
                 ))}
               </Box>
+            </motion.div>
+          </motion.div>
+
+          {/* Right: portrait */}
+          <motion.div
+            initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
+          >
+            <Box sx={{ position: 'relative', maxWidth: 420, mx: 'auto' }}>
+              <Box
+                sx={{
+                  position: 'relative',
+                  borderRadius: 6,
+                  overflow: 'hidden',
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  background: (theme) =>
+                    theme.palette.mode === 'dark'
+                      ? 'radial-gradient(ellipse 120% 90% at 50% 100%, rgba(139,150,250,0.24) 0%, rgba(24,28,37,0.6) 70%)'
+                      : 'radial-gradient(ellipse 120% 90% at 50% 100%, rgba(79,70,229,0.14) 0%, rgba(255,255,255,0.7) 70%)',
+                  aspectRatio: '1 / 1.08',
+                }}
+              >
+                <Image
+                  src={withPrefix('/images/hero-cutout.png')}
+                  alt="Vinay Panwar — Senior Software Engineer"
+                  fill
+                  priority
+                  sizes="(max-width: 900px) 90vw, 420px"
+                  style={{ objectFit: 'contain', objectPosition: 'bottom' }}
+                />
+              </Box>
+
+              {/* Now-building card */}
+              <Box
+                sx={{
+                  position: { xs: 'relative', md: 'absolute' },
+                  bottom: { md: 24 },
+                  left: { md: -36 },
+                  mt: { xs: 2, md: 0 },
+                  px: 2.25,
+                  py: 1.75,
+                  borderRadius: 3,
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  bgcolor: (theme) =>
+                    theme.palette.mode === 'dark' ? 'rgba(24,28,37,0.92)' : 'rgba(255,255,255,0.95)',
+                  backdropFilter: 'blur(12px)',
+                  boxShadow: (theme) =>
+                    theme.palette.mode === 'dark'
+                      ? '0 16px 40px rgba(0,0,0,0.45)'
+                      : '0 16px 40px rgba(15,23,42,0.12)',
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily: fonts.mono,
+                    fontSize: '0.68rem',
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    color: 'primary.main',
+                    mb: 0.5,
+                  }}
+                >
+                  Now building
+                </Typography>
+                <Typography sx={{ fontSize: '0.9rem', fontWeight: 600, color: 'text.primary' }}>
+                  Agentic workflows — N8N + local LLMs
+                </Typography>
+              </Box>
             </Box>
-          </Box>
+          </motion.div>
         </Box>
       </Container>
     </Box>

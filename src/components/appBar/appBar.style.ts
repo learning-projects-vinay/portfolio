@@ -1,70 +1,38 @@
 import { AppBar, Button, styled } from "@mui/material";
 
 export const CustomMuiAppBar = styled(AppBar)(({ theme }) => ({
-    display: "flex",
-    justifyContent: "center",
     position: "fixed",
-    background: theme.palette.mode === 'light' 
-        ? 'rgba(255, 255, 255, 0.85)'
-        : 'rgba(15, 15, 35, 0.85)',
-    backdropFilter: 'blur(20px) saturate(180%)',
-    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-    boxShadow: theme.palette.mode === 'light'
-        ? '0 8px 32px rgba(102, 126, 234, 0.1)'
-        : '0 8px 32px rgba(0, 0, 0, 0.3)',
-    borderBottom: theme.palette.mode === 'light'
-        ? '1px solid rgba(255, 255, 255, 0.18)'
-        : '1px solid rgba(255, 255, 255, 0.08)',
-    transition: 'all 0.3s ease',
-    '&:hover': {
-        boxShadow: theme.palette.mode === 'light'
-            ? '0 8px 32px rgba(102, 126, 234, 0.2)'
-            : '0 8px 32px rgba(102, 126, 234, 0.15)',
-    },
+    background: theme.palette.mode === 'light'
+        ? 'rgba(244, 245, 247, 0.85)'
+        : 'rgba(18, 21, 28, 0.85)',
+    backdropFilter: 'blur(16px) saturate(160%)',
+    WebkitBackdropFilter: 'blur(16px) saturate(160%)',
+    boxShadow: 'none',
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    backgroundImage: 'none',
     [theme.breakpoints.down('md')]: {
-        '& .desktop-menu': {
-            display: 'none'
-        },
-        '& .mobile-menu': {
-            display: 'flex'
-        }
+        '& .desktop-menu': { display: 'none' },
+        '& .desktop-actions': { display: 'none' },
+        '& .mobile-menu': { display: 'flex' }
     },
     [theme.breakpoints.up('md')]: {
-        '& .desktop-menu': {
-            display: 'flex'
-        },
-        '& .mobile-menu': {
-            display: 'none'
-        }
+        '& .desktop-menu': { display: 'flex' },
+        '& .desktop-actions': { display: 'flex' },
+        '& .mobile-menu': { display: 'none' }
     }
 }));
 
 export const MenuNavigateButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.mode === 'light' 
-        ? theme.palette.primary.main 
-        : theme.palette.text.primary,
-    paddingLeft: "16px",
-    paddingRight: "16px",
-    fontWeight: 600,
-    fontSize: '0.95rem',
-    position: 'relative',
-    '&::after': {
-        content: '""',
-        position: 'absolute',
-        bottom: 0,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: 0,
-        height: '2px',
-        background: 'linear-gradient(90deg, #667eea, #764ba2)',
-        transition: 'width 0.3s ease',
-    },
-    '&:hover::after': {
-        width: '80%',
-    },
+    color: theme.palette.text.secondary,
+    paddingLeft: "14px",
+    paddingRight: "14px",
+    fontWeight: 500,
+    fontSize: '0.9rem',
+    borderRadius: 8,
     '&:hover': {
+        color: theme.palette.text.primary,
         background: theme.palette.mode === 'light'
-            ? 'rgba(102, 126, 234, 0.08)'
-            : 'rgba(102, 126, 234, 0.15)',
+            ? 'rgba(15, 23, 42, 0.04)'
+            : 'rgba(148, 163, 184, 0.08)',
     }
 }));

@@ -1,247 +1,177 @@
 'use client';
-import { Box, Container, Typography, Card, CardContent, Button, CardActions, Chip } from '@mui/material';
+import { Box, Container, Typography, Card, Button } from '@mui/material';
 import { GitHub } from '@mui/icons-material';
-import { keyframes } from '@mui/system';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import { fonts } from '../../contexts/ThemeContext';
+import { projects, Project } from '../../data/profile';
+import SectionHeading from '../common/SectionHeading';
+import MonoChip from '../common/MonoChip';
+import Reveal from '../common/Reveal';
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
+const CaseBlock = ({ label, text }: { label: string; text: string }) => (
+  <Box>
+    <Typography
+      sx={{
+        fontFamily: fonts.mono,
+        fontSize: '0.72rem',
+        letterSpacing: '0.12em',
+        textTransform: 'uppercase',
+        color: 'primary.main',
+        mb: 0.75,
+      }}
+    >
+      {label}
+    </Typography>
+    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+      {text}
+    </Typography>
+  </Box>
+);
 
-// const shimmer = keyframes`
-//   0% {
-//     background-position: -1000px 0;
-//   }
-//   100% {
-//     background-position: 1000px 0;
-//   }
-// `;
+const ProjectLinks = ({ project }: { project: Project }) => (
+  <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap', mt: 3 }}>
+    {project.links.map((link) => (
+      <Button
+        key={link.href}
+        variant="outlined"
+        size="small"
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        startIcon={<GitHub sx={{ fontSize: 16 }} />}
+        sx={{ color: 'text.primary', fontSize: '0.85rem' }}
+      >
+        {link.label}
+      </Button>
+    ))}
+    {project.privateNote && (
+      <Button
+        variant="outlined"
+        size="small"
+        endIcon={<ArrowForwardIcon sx={{ fontSize: 16 }} />}
+        onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+        sx={{ color: 'text.primary', fontSize: '0.85rem' }}
+      >
+        {project.privateNote}
+      </Button>
+    )}
+  </Box>
+);
 
-const projects = [
-  {
-    title: "Webchat",
-    description: "A real-time chat application supporting room-based messaging. Features optimized event handling for improved message delivery speed.",
-    tech: ["TypeScript", "JavaScript", "EJS", "CSS"],
-    github: "https://github.com/Nodejs-workspace/webchat",
-    category: "Web Application"
-  },
-  {
-    title: "Express Centralized Session",
-    description: "A centralized session management system that enhances security and scalability. Enables session persistence across multiple servers, reducing session inconsistency.",
-    tech: ["TypeScript", "MongoDB"],
-    github: "https://github.com/Nodejs-mindpath-workspace/express-centralize-session",
-    category: "Backend Tool"
-  }
-];
+const ProjectHeader = ({ project }: { project: Project }) => (
+  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2.5, flexWrap: 'wrap' }}>
+    <Typography variant="h4" sx={{ fontSize: { xs: '1.35rem', md: '1.55rem' }, color: 'text.primary' }}>
+      {project.title}
+    </Typography>
+    {project.flagship && (
+      <Box
+        sx={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 0.5,
+          px: 1.25,
+          py: 0.4,
+          borderRadius: 50,
+          bgcolor: 'primary.main',
+          color: 'primary.contrastText',
+        }}
+      >
+        <AutoAwesomeIcon sx={{ fontSize: 13 }} />
+        <Typography sx={{ fontFamily: fonts.mono, fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.08em' }}>
+          FLAGSHIP · AI
+        </Typography>
+      </Box>
+    )}
+  </Box>
+);
 
 const Projects = () => {
+  const [flagship, ...rest] = projects;
+
   return (
     <Box
       id="projects"
       sx={{
-        py: 12,
-        background: (theme) => theme.palette.mode === 'light'
-          ? 'linear-gradient(180deg, #f5f7fa 0%, #ffffff 100%)'
-          : 'linear-gradient(180deg, #0f0f23 0%, #1a1a2e 100%)',
-        position: 'relative',
-        overflow: 'hidden',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '1px',
-          background: 'linear-gradient(90deg, transparent, rgba(102,126,234,0.3), transparent)'
-        }
+        py: { xs: 10, md: 14 },
+        borderTop: '1px solid',
+        borderColor: 'divider',
+        bgcolor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(148,163,184,0.025)' : 'rgba(15,23,42,0.015)'),
       }}
     >
       <Container maxWidth="lg">
-        <Box sx={{ textAlign: 'center', mb: 8 }}>
-          <Typography
-            variant="h3"
-            sx={{ 
-              mb: 2,
-              fontWeight: 700,
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
-            }}
-          >
-            Featured Projects
-          </Typography>
-          <Typography 
-            variant="h6" 
-            sx={{ 
-              color: 'text.secondary',
-              maxWidth: '600px',
-              mx: 'auto'
-            }}
-          >
-            Showcasing my latest work in web development and system design
-          </Typography>
-        </Box>
+        <SectionHeading
+          eyebrow="02 · Selected work"
+          title="Projects, told like case studies"
+          subtitle="Problem, build, outcome — because that's how engineering decisions should be judged."
+        />
 
-        <Box sx={{ 
-          display: 'grid', 
-          gridTemplateColumns: { 
-            xs: '1fr',
-            md: 'repeat(2, 1fr)'
-          }, 
-          gap: 4 
-        }}>
-          {projects.map((project, index) => (
-            <Card
-              key={index}
-              elevation={0}
+        {/* Flagship — full width */}
+        <Reveal>
+          <Card
+            sx={{
+              p: { xs: 3, md: 4.5 },
+              mb: 3,
+              borderColor: (theme) =>
+                theme.palette.mode === 'dark' ? 'rgba(139,150,250,0.4)' : 'rgba(79,70,229,0.35)',
+              background: (theme) =>
+                theme.palette.mode === 'dark'
+                  ? 'linear-gradient(140deg, rgba(139,150,250,0.08) 0%, rgba(16,19,27,0) 55%)'
+                  : 'linear-gradient(140deg, rgba(79,70,229,0.045) 0%, rgba(255,255,255,0) 55%)',
+              transition: 'transform 0.25s ease',
+              '&:hover': { transform: 'translateY(-4px)' },
+            }}
+          >
+            <ProjectHeader project={flagship} />
+            <Box
               sx={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                background: (theme) => theme.palette.mode === 'light'
-                  ? 'white'
-                  : 'rgba(255, 255, 255, 0.05)',
-                borderRadius: 4,
-                border: '1px solid',
-                borderColor: (theme) => theme.palette.mode === 'light'
-                  ? 'rgba(102, 126, 234, 0.15)'
-                  : 'rgba(102, 126, 234, 0.3)',
-                animation: `${fadeIn} 0.8s ease-out ${index * 0.15}s both`,
-                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                position: 'relative',
-                overflow: 'hidden',
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: '4px',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  transform: 'scaleX(0)',
-                  transformOrigin: 'left',
-                  transition: 'transform 0.4s ease'
-                },
-                '&:hover': {
-                  transform: 'translateY(-12px) scale(1.02)',
-                  borderColor: '#667eea',
-                  boxShadow: '0 25px 50px rgba(102, 126, 234, 0.2)',
-                  '&::before': {
-                    transform: 'scaleX(1)'
-                  },
-                  '& .project-category': {
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    color: 'white'
-                  },
-                  '& .tech-badge': {
-                    transform: 'translateY(-2px)'
-                  }
-                },
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
+                gap: { xs: 2.5, md: 4 },
+                mb: 3,
               }}
             >
-              <CardContent sx={{ flexGrow: 1, p: 4 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                  <Chip
-                    label={project.category}
-                    className="project-category"
-                    size="small"
-                    sx={{
-                      background: (theme) => theme.palette.mode === 'light'
-                        ? 'rgba(102, 126, 234, 0.1)'
-                        : 'rgba(102, 126, 234, 0.2)',
-                      color: (theme) => theme.palette.mode === 'light'
-                        ? '#667eea'
-                        : '#a8b3ff',
-                      fontWeight: 600,
-                      fontSize: '0.75rem',
-                      transition: 'all 0.3s ease'
-                    }}
-                  />
+              <CaseBlock label="Problem" text={flagship.problem} />
+              <CaseBlock label="Build" text={flagship.build} />
+              <CaseBlock label="Outcome" text={flagship.outcome} />
+            </Box>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+              {flagship.tech.map((tech) => (
+                <MonoChip key={tech} label={tech} />
+              ))}
+            </Box>
+            <ProjectLinks project={flagship} />
+          </Card>
+        </Reveal>
+
+        {/* Remaining case studies */}
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
+          {rest.map((project, index) => (
+            <Reveal key={project.title} delay={index * 0.1}>
+              <Card
+                sx={{
+                  p: { xs: 3, md: 4 },
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  transition: 'border-color 0.25s ease, transform 0.25s ease',
+                  '&:hover': { borderColor: 'primary.main', transform: 'translateY(-4px)' },
+                }}
+              >
+                <ProjectHeader project={project} />
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5, mb: 3, flexGrow: 1 }}>
+                  <CaseBlock label="Problem" text={project.problem} />
+                  <CaseBlock label="Build" text={project.build} />
+                  <CaseBlock label="Outcome" text={project.outcome} />
                 </Box>
-                
-                <Typography 
-                  variant="h5" 
-                  gutterBottom 
-                  sx={{ 
-                    fontWeight: 700,
-                    mb: 2,
-                    color: 'text.primary'
-                  }}
-                >
-                  {project.title}
-                </Typography>
-                
-                <Typography 
-                  variant="body1" 
-                  color="text.secondary" 
-                  paragraph
-                  sx={{ lineHeight: 1.8, mb: 3 }}
-                >
-                  {project.description}
-                </Typography>
-                
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                  {project.tech.map((tech, idx) => (
-                    <Box
-                      key={idx}
-                      className="tech-badge"
-                      sx={{
-                        px: 2,
-                        py: 0.75,
-                        borderRadius: 2,
-                        background: (theme) => theme.palette.mode === 'light'
-                          ? 'linear-gradient(135deg, rgba(102,126,234,0.08) 0%, rgba(118,75,162,0.08) 100%)'
-                          : 'linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.15) 100%)',
-                        border: (theme) => theme.palette.mode === 'light'
-                          ? '1px solid rgba(102,126,234,0.15)'
-                          : '1px solid rgba(102,126,234,0.3)',
-                        fontSize: '0.875rem',
-                        fontWeight: 500,
-                        color: (theme) => theme.palette.mode === 'light'
-                          ? '#667eea'
-                          : '#a8b3ff',
-                        transition: 'all 0.2s ease'
-                      }}
-                    >
-                      {tech}
-                    </Box>
+                  {project.tech.map((tech) => (
+                    <MonoChip key={tech} label={tech} />
                   ))}
                 </Box>
-              </CardContent>
-              
-              <CardActions sx={{ p: 3, pt: 0, gap: 2 }}>
-                <Button
-                  variant="contained"
-                  size="medium"
-                  href={project.github}
-                  target="_blank"
-                  startIcon={<GitHub />}
-                  sx={{
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    color: 'white',
-                    fontWeight: 600,
-                    px: 3,
-                    textTransform: 'none',
-                    borderRadius: 2,
-                    boxShadow: '0 4px 14px rgba(102,126,234,0.3)',
-                    '&:hover': {
-                      background: 'linear-gradient(135deg, #5568d3 0%, #64398a 100%)',
-                      boxShadow: '0 6px 20px rgba(102,126,234,0.4)',
-                      transform: 'translateY(-2px)'
-                    }
-                  }}
-                >
-                  View Code
-                </Button>
-              </CardActions>
-            </Card>
+                <ProjectLinks project={project} />
+              </Card>
+            </Reveal>
           ))}
         </Box>
       </Container>

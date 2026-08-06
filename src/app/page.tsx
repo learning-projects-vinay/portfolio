@@ -4,14 +4,13 @@ import { Box } from '@mui/material';
 import ThemeContextProvider from '../contexts/ThemeContext';
 import CustomAppBar from '../components/appBar';
 import Hero from '../components/sections/Hero';
-import About from '../components/sections/About';
-import Stats from '../components/sections/Stats';
-import Services from '../components/sections/Services';
-import Experience from '../components/sections/Experience';
+import Impact from '../components/sections/Impact';
 import Projects from '../components/sections/Projects';
-import Education from '../components/sections/Education';
+import Experience from '../components/sections/Experience';
+import About from '../components/sections/About';
 import Contact from '../components/sections/Contact';
 import MainFooter from '../components/footers/main';
+import AskAi from '../components/askAi';
 
 export default function Home() {
   return (
@@ -20,15 +19,14 @@ export default function Home() {
         <CustomAppBar />
         <main>
           <Hero />
-          <About />
-          <Stats />
-          <Services />
-          <Experience />
+          <Impact />
           <Projects />
-          <Education />
+          <Experience />
+          <About />
           <Contact />
         </main>
         <MainFooter />
+        <AskAi />
       </Box>
     </ThemeContextProvider>
   );
