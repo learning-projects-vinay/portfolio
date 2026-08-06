@@ -21,8 +21,11 @@ npx wrangler deploy
 Add the URL to the portfolio's env files, then rebuild/redeploy the site:
 
 ```bash
-# .env (production) and .env.local (development)
+# example.env — this is what the GitHub Actions deploy copies to .env, so the
+# production site reads it from here. Uncomment the existing line and set:
 NEXT_PUBLIC_ASK_AI_URL="https://vinay-ask-ai.<your-subdomain>.workers.dev"
+
+# .env.local — same line, for local development
 ```
 
 The widget hides itself when `NEXT_PUBLIC_ASK_AI_URL` is unset, so the site keeps working before this step.
