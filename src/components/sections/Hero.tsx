@@ -261,10 +261,11 @@ const Hero = () => {
                   borderRadius: 6,
                   overflow: 'hidden',
                   border: '1px solid',
-                  borderColor: 'divider',
+                  borderColor: (theme) =>
+                    theme.palette.mode === 'dark' ? 'rgba(148,163,184,0.28)' : 'divider',
                   background: (theme) =>
                     theme.palette.mode === 'dark'
-                      ? 'radial-gradient(ellipse 120% 90% at 50% 100%, rgba(139,150,250,0.24) 0%, rgba(24,28,37,0.6) 70%)'
+                      ? 'radial-gradient(ellipse 120% 90% at 50% 100%, rgba(139,150,250,0.32) 0%, rgba(52,58,74,0.95) 75%)'
                       : 'radial-gradient(ellipse 120% 90% at 50% 100%, rgba(79,70,229,0.14) 0%, rgba(255,255,255,0.7) 70%)',
                   aspectRatio: '1 / 1.08',
                 }}

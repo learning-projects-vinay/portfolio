@@ -11,7 +11,7 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  mode: 'dark',
+  mode: 'light',
   toggleTheme: () => {},
 });
 
@@ -24,7 +24,7 @@ export const fonts = {
 };
 
 export default function ThemeContextProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = useState<ThemeMode>('dark');
+  const [mode, setMode] = useState<ThemeMode>('light');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
