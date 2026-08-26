@@ -9,5 +9,14 @@ ALLOWED_ORIGINS = "https://learning-projects-vinay.github.io,http://localhost:30
 # switch to "claude-opus-5" for maximum answer quality.
 MODEL = "claude-haiku-4-5"
 
+# Per-IP rate limit. This is the real spend control on the endpoint — the Origin
+# allowlist above only stops other sites embedding it, and any non-browser client
+# can forge an Origin header. The worker refuses to serve if this binding is gone.
+[[unsafe.bindings]]
+name = "RATE_LIMITER"
+type = "ratelimit"
+namespace_id = "1001"
+simple = { limit = 10, period = 60 }
+
 # Secret (set once, never committed):
 #   npx wrangler secret put ANTHROPIC_API_KEY

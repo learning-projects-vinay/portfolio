@@ -23,6 +23,18 @@ const SUGGESTIONS = [
   "What's his stack?",
 ];
 
+// The worker accepts at most 12 messages and requires the window to open on a
+// user turn — dropping error bubbles above can otherwise leave an assistant first.
+const MAX_HISTORY = 11;
+
+const windowHistory = (history: ChatMessage[]) => {
+  const windowed = history.slice(-MAX_HISTORY);
+  while (windowed.length > 0 && windowed[0].role !== 'user') {
+    windowed.shift();
+  }
+  return windowed;
+};
+
 const WELCOME =
   "Hi! I'm Vinay's AI — grounded in his résumé and projects. Ask me anything a recruiter or client would want to know.";
 
@@ -74,7 +86,7 @@ const AskAi = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: history.slice(-11).map(({ role, content }) => ({ role, content })),
+          messages: windowHistory(history).map(({ role, content }) => ({ role, content })),
         }),
       });
       const data = (await res.json()) as { reply?: string; error?: string };

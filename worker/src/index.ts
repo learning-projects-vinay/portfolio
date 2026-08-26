@@ -1,9 +1,15 @@
 import Anthropic from '@anthropic-ai/sdk';
 
+/** Cloudflare's rate-limiting binding (declared in wrangler.toml). */
+interface RateLimiter {
+  limit(options: { key: string }): Promise<{ success: boolean }>;
+}
+
 interface Env {
   ANTHROPIC_API_KEY: string;
   ALLOWED_ORIGINS: string;
   MODEL: string;
+  RATE_LIMITER: RateLimiter;
 }
 
 interface ChatMessage {
@@ -13,6 +19,10 @@ interface ChatMessage {
 
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_CHARS = 1000;
+/** Hard ceiling on the request body, checked before it is read into memory. */
+const MAX_BODY_BYTES = 16 * 1024;
+/** Bound each upstream call so a hung request cannot pin a Worker invocation. */
+const ANTHROPIC_TIMEOUT_MS = 30_000;
 
 const SYSTEM_PROMPT = `You are the AI assistant embedded on Vinay Panwar's portfolio website (learning-projects-vinay.github.io/portfolio). Visitors are recruiters and potential clients evaluating whether to hire him. Your job: answer their questions about Vinay accurately, concisely, and persuasively, grounded ONLY in the profile below.
 
@@ -59,6 +69,9 @@ const corsHeaders = (origin: string) => ({
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Max-Age': '86400',
+  // The allowed origin is reflected per request, so any cache in front of this
+  // Worker must key on Origin or it will serve one site's CORS grant to another.
+  Vary: 'Origin',
 });
 
 const json = (body: unknown, status: number, origin: string) =>
@@ -87,12 +100,19 @@ function validateMessages(input: unknown): ChatMessage[] | null {
   return messages;
 }
 
-export default {
+const handler = {
   async fetch(request: Request, env: Env): Promise<Response> {
+    // The Origin allowlist keeps other websites from embedding this endpoint;
+    // it is NOT access control, since any non-browser client can forge the
+    // header. The per-IP rate limit below is what actually caps abuse of the
+    // (billed) Anthropic key.
     const origin = request.headers.get('Origin') ?? '';
-    const allowed = env.ALLOWED_ORIGINS.split(',').map((o) => o.trim());
-    if (!allowed.includes(origin)) {
-      return new Response('Forbidden', { status: 403 });
+    const allowed = (env.ALLOWED_ORIGINS ?? '')
+      .split(',')
+      .map((o) => o.trim())
+      .filter(Boolean);
+    if (!origin || !allowed.includes(origin)) {
+      return new Response('Forbidden', { status: 403, headers: { Vary: 'Origin' } });
     }
 
     if (request.method === 'OPTIONS') {
@@ -100,6 +120,26 @@ export default {
     }
     if (request.method !== 'POST') {
       return json({ error: 'Method not allowed' }, 405, origin);
+    }
+
+    // Fail closed: without the binding there is nothing capping spend on the key.
+    if (!env.RATE_LIMITER) {
+      console.error('RATE_LIMITER binding missing — refusing to proxy unmetered requests');
+      return json({ error: 'The assistant is unavailable right now.' }, 503, origin);
+    }
+    const clientIp = request.headers.get('CF-Connecting-IP') ?? 'unknown';
+    const { success } = await env.RATE_LIMITER.limit({ key: clientIp });
+    if (!success) {
+      return json(
+        { error: "That's a lot of questions! Give it a minute, or email vinaypanwar280@gmail.com." },
+        429,
+        origin,
+      );
+    }
+
+    const contentLength = Number(request.headers.get('Content-Length') ?? '0');
+    if (contentLength > MAX_BODY_BYTES) {
+      return json({ error: 'Request too large' }, 413, origin);
     }
 
     let messages: ChatMessage[] | null = null;
@@ -113,7 +153,11 @@ export default {
       return json({ error: 'Invalid request' }, 400, origin);
     }
 
-    const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
+    const client = new Anthropic({
+      apiKey: env.ANTHROPIC_API_KEY,
+      timeout: ANTHROPIC_TIMEOUT_MS,
+      maxRetries: 1,
+    });
 
     try {
       const response = await client.messages.create({
@@ -151,3 +195,5 @@ export default {
     }
   },
 };
+
+export default handler;

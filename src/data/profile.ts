@@ -195,6 +195,15 @@ const parseYM = (ym: string) => {
   return { y, m };
 };
 
+// Frozen at build time by next.config.ts. Using `new Date()` here instead would
+// let the server-rendered HTML and the client render disagree once the build is
+// older than the current month, which React reports as a hydration error.
+const buildDate = new Date(process.env.NEXT_PUBLIC_BUILD_DATE || Date.now());
+
+export const buildYear = buildDate.getFullYear();
+
+const nowYM = () => ({ y: buildDate.getFullYear(), m: buildDate.getMonth() + 1 });
+
 export const formatPeriod = (start: string, end?: string) => {
   const s = parseYM(start);
   const label = (p: { y: number; m: number }) => `${MONTHS[p.m - 1]} ${p.y}`;
@@ -203,8 +212,7 @@ export const formatPeriod = (start: string, end?: string) => {
 
 export const formatDuration = (start: string, end?: string) => {
   const s = parseYM(start);
-  const now = new Date();
-  const e = end ? parseYM(end) : { y: now.getFullYear(), m: now.getMonth() + 1 };
+  const e = end ? parseYM(end) : nowYM();
   const months = (e.y - s.y) * 12 + (e.m - s.m);
   if (months < 12) return `${months} mos`;
   const yrs = Math.floor(months / 12);
@@ -214,7 +222,7 @@ export const formatDuration = (start: string, end?: string) => {
 
 export const totalExperienceYears = () => {
   const s = parseYM('2022-12');
-  const now = new Date();
-  const months = (now.getFullYear() - s.y) * 12 + (now.getMonth() + 1 - s.m);
+  const now = nowYM();
+  const months = (now.y - s.y) * 12 + (now.m - s.m);
   return `${Math.floor(months / 12)}+ years`;
 };

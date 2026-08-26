@@ -88,6 +88,10 @@ jobs:
           cp example.env .env
 
       - name: Build with Next.js
+        # NEXT_PUBLIC_ASK_AI_URL is a public Worker endpoint, not a secret, so it
+        # lives in repository variables. Unset, the Ask-AI widget renders nothing.
+        env:
+          NEXT_PUBLIC_ASK_AI_URL: ${{ vars.NEXT_PUBLIC_ASK_AI_URL }}
         run:  ${{ steps.detect-package-manager.outputs.runner }} next build
 
       - name: Upload artifact

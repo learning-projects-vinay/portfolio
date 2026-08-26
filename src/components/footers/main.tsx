@@ -4,7 +4,7 @@ import { Box, Container, Typography, IconButton, Tooltip } from '@mui/material';
 import { LinkedIn, GitHub, Email } from '@mui/icons-material';
 import { memo } from "react";
 import { fonts } from '../../contexts/ThemeContext';
-import { profile } from '../../data/profile';
+import { profile, buildYear } from '../../data/profile';
 
 const socials = [
   { icon: <LinkedIn fontSize="small" />, href: profile.links.linkedin, label: 'LinkedIn' },
@@ -28,7 +28,7 @@ const MainFooter = () => (
         }}
       >
         <Typography sx={{ fontFamily: fonts.mono, fontSize: '0.8rem', color: 'text.secondary' }}>
-          © {new Date().getFullYear()} {profile.name} · {profile.location}
+          © {buildYear} {profile.name} · {profile.location}
         </Typography>
 
         <Typography
