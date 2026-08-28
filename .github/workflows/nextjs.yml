@@ -35,7 +35,11 @@ jobs:
       
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          # Nothing after this step uses git, and the Pages deploy authenticates
+          # via OIDC — so don't leave the token behind in .git/config.
+          persist-credentials: false
 
       - name: Detect package manager
         id: detect-package-manager
@@ -55,13 +59,13 @@ jobs:
             exit 1
           fi
       - name: Setup Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "22"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
       - name: Setup Pages
-        uses: actions/configure-pages@v6
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
         with:
           # Automatically inject basePath in your Next.js configuration file and disable
           # server side image optimization (https://nextjs.org/docs/api-reference/next/image#unoptimized).
@@ -70,7 +74,7 @@ jobs:
           static_site_generator: next
 
       - name: Restore cache
-        uses: actions/cache@v6
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: |
             .next/cache
@@ -81,7 +85,11 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
 
       - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        # --ignore-scripts blocks dependency lifecycle scripts (pre/post-install),
+        # the usual way a compromised package runs code in CI. Verified: the only
+        # dependency here with an install script is unrs-resolver (a transitive
+        # ESLint dep), and both `next build` and `eslint` work without it.
+        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }} --ignore-scripts
 
       - name: Rename example.env to .env
         run: |
@@ -95,7 +103,7 @@ jobs:
         run:  ${{ steps.detect-package-manager.outputs.runner }} next build
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
           path: ./out
 
@@ -109,4 +117,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5
