@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { fonts } from '../../contexts/ThemeContext';
 import { profile, heroStats, withPrefix } from '../../data/profile';
+import { ConsoleTrigger } from '../console/ApiConsole';
 
 const container = {
   hidden: {},
@@ -186,7 +187,7 @@ const Hero = () => {
             </motion.div>
 
             <motion.div variants={item}>
-              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: { xs: 5, md: 7 } }}>
+              <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 3 }}>
                 <Button
                   variant="contained"
                   size="large"
@@ -209,6 +210,22 @@ const Hero = () => {
                 >
                   Résumé
                 </Button>
+              </Box>
+            </motion.div>
+
+            <motion.div variants={item}>
+              <Box sx={{ mb: { xs: 5, md: 7 } }}>
+                <ConsoleTrigger />
+                <Typography
+                  sx={{
+                    fontSize: '0.78rem',
+                    color: 'text.secondary',
+                    mt: 1,
+                    maxWidth: 520,
+                  }}
+                >
+                  {"Or read the résumé the way I'd ship it — as an API you can query."}
+                </Typography>
               </Box>
             </motion.div>
 

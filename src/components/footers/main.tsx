@@ -4,7 +4,7 @@ import { Box, Container, Typography, IconButton, Tooltip } from '@mui/material';
 import { LinkedIn, GitHub, Email } from '@mui/icons-material';
 import { memo } from "react";
 import { fonts } from '../../contexts/ThemeContext';
-import { profile, buildYear } from '../../data/profile';
+import { profile, buildYear, withPrefix } from '../../data/profile';
 
 const socials = [
   { icon: <LinkedIn fontSize="small" />, href: profile.links.linkedin, label: 'LinkedIn' },
@@ -31,6 +31,24 @@ const MainFooter = () => (
           © {buildYear} {profile.name} · {profile.location}
         </Typography>
 
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap', justifyContent: 'center' }}>
+        <Typography
+          component="a"
+          href={withPrefix('/api/openapi.json')}
+          target="_blank"
+          rel="noopener noreferrer"
+          sx={{
+            fontFamily: fonts.mono,
+            fontSize: '0.8rem',
+            color: 'text.secondary',
+            '&:hover': { color: 'primary.main' },
+          }}
+        >
+          /api
+        </Typography>
+
+        <Typography sx={{ color: 'text.secondary', fontSize: '0.8rem' }}>·</Typography>
+
         <Typography
           component="a"
           href={profile.links.source}
@@ -45,6 +63,7 @@ const MainFooter = () => (
         >
           Built with Next.js — view source
         </Typography>
+        </Box>
 
         <Box sx={{ display: 'flex', gap: 1 }}>
           {socials.map((social) => (

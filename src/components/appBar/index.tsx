@@ -10,6 +10,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { CustomMuiAppBar, MenuNavigateButton } from "./appBar.style";
 import { useThemeMode, fonts } from '../../contexts/ThemeContext';
 import { profile, withPrefix } from '../../data/profile';
+import { ConsoleButton } from '../console/ApiConsole';
 
 const navigationItems = [
   { id: 'impact', label: 'Impact' },
@@ -82,6 +83,7 @@ const CustomAppBar = () => {
         ))}
       </List>
       <Box sx={{ mt: 'auto', p: 2, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+        <ConsoleButton full />
         <Button
           variant="outlined"
           startIcon={<DownloadIcon />}
@@ -132,6 +134,7 @@ const CustomAppBar = () => {
               </IconButton>
             </Tooltip>
             <Box className="desktop-actions" sx={{ gap: 1.5 }}>
+              <ConsoleButton />
               <Button
                 variant="outlined"
                 size="small"

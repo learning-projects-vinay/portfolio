@@ -11,23 +11,28 @@ import About from '../components/sections/About';
 import Contact from '../components/sections/Contact';
 import MainFooter from '../components/footers/main';
 import AskAi from '../components/askAi';
+import ConsoleProvider from '../components/console/ConsoleContext';
+import ApiConsole from '../components/console/ApiConsole';
 
 export default function Home() {
   return (
     <ThemeContextProvider>
-      <Box sx={{ minHeight: '100vh' }}>
-        <CustomAppBar />
-        <main>
-          <Hero />
-          <Impact />
-          <Projects />
-          <Experience />
-          <About />
-          <Contact />
-        </main>
-        <MainFooter />
-        <AskAi />
-      </Box>
+      <ConsoleProvider>
+        <Box sx={{ minHeight: '100vh' }}>
+          <CustomAppBar />
+          <main>
+            <Hero />
+            <Impact />
+            <Projects />
+            <Experience />
+            <About />
+            <Contact />
+          </main>
+          <MainFooter />
+          <AskAi />
+          <ApiConsole />
+        </Box>
+      </ConsoleProvider>
     </ThemeContextProvider>
   );
 }
