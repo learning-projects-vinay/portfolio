@@ -12,6 +12,7 @@ export const profile = {
   timezone: 'IST (UTC+5:30)',
   availability: 'Open to roles & select client work',
   languages: 'English, Hindi',
+  nowBuilding: 'Agentic workflows — N8N orchestration over local LLMs',
   links: {
     linkedin: 'https://www.linkedin.com/in/vinay-panwar-vin/',
     github: 'https://github.com/vinay-panwar',
@@ -58,6 +59,8 @@ export const stack = [
 
 export interface Project {
   title: string;
+  /** Role title this shipped under — files the project into that release. */
+  shippedIn?: string;
   flagship?: boolean;
   problem: string;
   build: string;
@@ -70,6 +73,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     title: 'Multi-Agent AI Assistant',
+    shippedIn: 'Senior Software Engineer',
     flagship: true,
     problem:
       'An always-on personal assistant is genuinely useful — but not if it means streaming your private data to a cloud provider.',
@@ -83,6 +87,7 @@ export const projects: Project[] = [
   },
   {
     title: 'Express Architecture Enforcer',
+    shippedIn: 'Senior Software Engineer',
     problem:
       'Every new service started from copy-pasted boilerplate, so conventions drifted and onboarding slowed the whole team down.',
     build:
@@ -99,6 +104,7 @@ export const projects: Project[] = [
   },
   {
     title: 'WebChat + Centralised Sessions',
+    shippedIn: 'Software Developer',
     problem:
       'Real-time chat is easy on one server — until you scale out and session state stops being consistent.',
     build:
@@ -116,13 +122,21 @@ export const projects: Project[] = [
   },
 ];
 
+/** Keep-a-Changelog categories, minus the ones a career doesn't produce. */
+export type EntryKind = 'added' | 'changed' | 'perf' | 'security';
+
+export interface Entry {
+  kind: EntryKind;
+  text: string;
+}
+
 export interface Role {
   title: string;
   company: string;
   start: string; // YYYY-MM
   end?: string; // YYYY-MM, absent = present
   summary: string;
-  achievements: string[];
+  achievements: Entry[];
   tags: string[];
 }
 
@@ -133,11 +147,16 @@ export const experience: Role[] = [
     start: '2025-12',
     summary: 'Leading a team of 2–4 engineers; owning architecture, CI/CD, and AI workflow design.',
     achievements: [
-      'Lead a team of 2–4 engineers — weekly code reviews, architecture standards, and mentoring juniors to production-readiness.',
-      'Introduced a modular-monolith pattern across Node.js/Express services, cutting cross-team integration issues.',
-      'Drive AI-integrated workflow adoption: N8N, agentic-flow design, and chat-model orchestration across internal tools and client products.',
-      'Own infrastructure decisions — Azure DevOps pipelines, Docker strategy, and multi-environment deploy automation.',
-      'Work directly with clients to turn business requirements into specs, sprint goals, and delivery milestones.',
+      { kind: 'added', text:
+        'Lead a team of 2–4 engineers — weekly code reviews, architecture standards, and mentoring juniors to production-readiness.' },
+      { kind: 'changed', text:
+        'Introduced a modular-monolith pattern across Node.js/Express services, cutting cross-team integration issues.' },
+      { kind: 'added', text:
+        'Drive AI-integrated workflow adoption: N8N, agentic-flow design, and chat-model orchestration across internal tools and client products.' },
+      { kind: 'changed', text:
+        'Own infrastructure decisions — Azure DevOps pipelines, Docker strategy, and multi-environment deploy automation.' },
+      { kind: 'added', text:
+        'Work directly with clients to turn business requirements into specs, sprint goals, and delivery milestones.' },
     ],
     tags: ['Leadership', 'Architecture', 'AI Workflows', 'Azure'],
   },
@@ -148,11 +167,16 @@ export const experience: Role[] = [
     end: '2025-12',
     summary: 'Shipped 200+ production APIs and the event-driven systems behind them.',
     achievements: [
-      'Built and shipped 200+ REST APIs in Node.js, Express, and NestJS — cutting API response latency by 50% across client products.',
-      'Built event-driven backends with Azure Functions, Service Bus, and Cosmos DB for high-concurrency workloads.',
-      'Implemented Azure DevOps CI/CD automating build, test, and deploy — release time down from 15–20 minutes to 5–8.',
-      'Delivered full-stack apps with React, Next.js, and EJS across MySQL, MS SQL, MongoDB, and InfluxDB in production.',
-      'Worked directly with international clients on scoping, sprint planning, and live demos.',
+      { kind: 'added', text:
+        'Built and shipped 200+ REST APIs in Node.js, Express, and NestJS — cutting API response latency by 50% across client products.' },
+      { kind: 'added', text:
+        'Built event-driven backends with Azure Functions, Service Bus, and Cosmos DB for high-concurrency workloads.' },
+      { kind: 'perf', text:
+        'Implemented Azure DevOps CI/CD automating build, test, and deploy — release time down from 15–20 minutes to 5–8.' },
+      { kind: 'added', text:
+        'Delivered full-stack apps with React, Next.js, and EJS across MySQL, MS SQL, MongoDB, and InfluxDB in production.' },
+      { kind: 'added', text:
+        'Worked directly with international clients on scoping, sprint planning, and live demos.' },
     ],
     tags: ['Node.js', 'Azure', 'CI/CD', 'Event-Driven'],
   },
@@ -163,8 +187,10 @@ export const experience: Role[] = [
     end: '2023-07',
     summary: 'From fundamentals to production code in seven months.',
     achievements: [
-      'Built and optimised REST APIs in Node.js/Express; integrated Azure Functions and Docker in a production environment.',
-      'Developed client-facing web apps with EJS and modern JavaScript inside an Agile sprint workflow.',
+      { kind: 'added', text:
+        'Built and optimised REST APIs in Node.js/Express; integrated Azure Functions and Docker in a production environment.' },
+      { kind: 'added', text:
+        'Developed client-facing web apps with EJS and modern JavaScript inside an Agile sprint workflow.' },
     ],
     tags: ['Express.js', 'Docker', 'Git', 'Agile'],
   },
@@ -226,3 +252,13 @@ export const totalExperienceYears = () => {
   const months = (now.y - s.y) * 12 + (now.m - s.m);
   return `${Math.floor(months / 12)}+ years`;
 };
+
+// Releases are numbered from the first role forward — `experience` is newest-first,
+// so the oldest role is v1.0.0 and each subsequent role bumps the major. Deriving it
+// means adding a job never needs a hand-edited version string.
+export const roleVersion = (role: Role) =>
+  `v${experience.length - experience.indexOf(role)}.0.0`;
+
+/** Projects filed under the release they shipped in, newest release first. */
+export const projectsForRole = (role: Role) =>
+  projects.filter((project) => project.shippedIn === role.title);

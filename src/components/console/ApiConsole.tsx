@@ -730,7 +730,7 @@ export const ConsoleTrigger = () => {
       'GET /experience?tag=azure',
       'GET /projects/multi-agent-ai-assistant',
       'GET /stack?group=ai',
-      'POST /ask why should we hire him',
+      ...(ASK_URL ? ['POST /ask why should we hire him'] : []),
       'GET /impact',
     ],
     [],

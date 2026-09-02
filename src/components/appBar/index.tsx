@@ -13,9 +13,8 @@ import { profile, withPrefix } from '../../data/profile';
 import { ConsoleButton } from '../console/ApiConsole';
 
 const navigationItems = [
-  { id: 'impact', label: 'Impact' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'experience', label: 'Experience' },
+  { id: 'changelog', label: 'Changelog' },
+  { id: 'capabilities', label: 'Capabilities' },
   { id: 'about', label: 'About' },
   { id: 'contact', label: 'Contact' }
 ];

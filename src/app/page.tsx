@@ -4,9 +4,8 @@ import { Box } from '@mui/material';
 import ThemeContextProvider from '../contexts/ThemeContext';
 import CustomAppBar from '../components/appBar';
 import Hero from '../components/sections/Hero';
-import Impact from '../components/sections/Impact';
-import Projects from '../components/sections/Projects';
-import Experience from '../components/sections/Experience';
+import Releases from '../components/sections/Releases';
+import Capabilities from '../components/sections/Capabilities';
 import About from '../components/sections/About';
 import Contact from '../components/sections/Contact';
 import MainFooter from '../components/footers/main';
@@ -22,9 +21,8 @@ export default function Home() {
           <CustomAppBar />
           <main>
             <Hero />
-            <Impact />
-            <Projects />
-            <Experience />
+            <Releases />
+            <Capabilities />
             <About />
             <Contact />
           </main>

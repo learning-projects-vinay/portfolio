@@ -219,7 +219,16 @@ const roleSchema = {
     period: { type: 'string' },
     duration: { type: 'string' },
     summary: { type: 'string' },
-    highlights: { type: 'array', items: { type: 'string' } },
+    highlights: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          kind: { enum: ['added', 'changed', 'perf', 'security'] },
+          text: { type: 'string' },
+        },
+      },
+    },
     tags: { type: 'array', items: { type: 'string' } },
   },
 } as const;
@@ -229,7 +238,13 @@ const collectionSchema = (items: Record<string, unknown>) => ({
   properties: { count: { type: 'integer' }, data: { type: 'array', items } },
 });
 
-export const apiRoutes: RouteDef[] = [
+// The assistant only exists when the Worker is deployed. Rather than advertise a
+// route that would 503 for every visitor, it is dropped from the registry when the
+// URL is unset — so it never reaches the discovery document, the console's
+// autocomplete, or the hero's example commands.
+const ASK_ENABLED = Boolean(process.env.NEXT_PUBLIC_ASK_AI_URL);
+
+const allRoutes: RouteDef[] = [
   {
     method: 'GET',
     path: '/',
@@ -416,6 +431,10 @@ export const apiRoutes: RouteDef[] = [
     resolve: () => ok({ status: 'pending' }),
   },
 ];
+
+export const apiRoutes: RouteDef[] = allRoutes.filter(
+  (route) => route.kind !== 'ask' || ASK_ENABLED,
+);
 
 export const indexResource = () => ({
   name: API_NAME,

@@ -5,7 +5,8 @@ import DownloadIcon from '@mui/icons-material/Download';
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { fonts } from '../../contexts/ThemeContext';
-import { profile, heroStats, withPrefix } from '../../data/profile';
+import { profile, heroStats, experience, formatPeriod, formatDuration, roleVersion, withPrefix } from '../../data/profile';
+import CountUp from '../common/CountUp';
 import { ConsoleTrigger } from '../console/ApiConsole';
 
 const container = {
@@ -59,10 +60,17 @@ const AvailabilityBadge = () => (
 
 const Hero = () => {
   const reduceMotion = useReducedMotion();
-  const item = {
-    hidden: { opacity: 0, y: reduceMotion ? 0 : 24 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] as const } },
-  };
+  const current = experience[0];
+  const item = reduceMotion
+    ? { hidden: { opacity: 1, y: 0 }, show: { opacity: 1, y: 0 } }
+    : {
+        hidden: { opacity: 0, y: 24 },
+        show: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] as const },
+        },
+      };
 
   return (
     <Box
@@ -126,7 +134,41 @@ const Hero = () => {
           {/* Left: pitch */}
           <motion.div variants={container} initial="hidden" animate="show">
             <motion.div variants={item}>
-              <AvailabilityBadge />
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: { xs: 1.25, sm: 2 },
+                }}
+              >
+                <Typography
+                  component="p"
+                  sx={{
+                    fontFamily: fonts.mono,
+                    fontWeight: 700,
+                    fontSize: { xs: '1.5rem', md: '1.75rem' },
+                    letterSpacing: '-0.02em',
+                    lineHeight: 1,
+                    color: 'text.primary',
+                  }}
+                >
+                  {roleVersion(current)}
+                </Typography>
+
+                <AvailabilityBadge />
+
+                <Typography
+                  sx={{
+                    fontFamily: fonts.mono,
+                    fontSize: '0.75rem',
+                    color: 'text.secondary',
+                  }}
+                >
+                  released {formatPeriod(current.start, current.end).split(' — ')[0]} ·{' '}
+                  {formatDuration(current.start, current.end)} ago
+                </Typography>
+              </Box>
             </motion.div>
 
             <motion.div variants={item}>
@@ -252,7 +294,7 @@ const Hero = () => {
                         lineHeight: 1.2,
                       }}
                     >
-                      {stat.value}
+                      <CountUp value={stat.value} />
                     </Typography>
                     <Typography
                       sx={{ fontSize: '0.82rem', color: 'text.secondary', lineHeight: 1.5, mt: 0.5 }}
@@ -267,7 +309,7 @@ const Hero = () => {
 
           {/* Right: portrait */}
           <motion.div
-            initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.96 }}
+            initial={{ opacity: reduceMotion ? 1 : 0, scale: reduceMotion ? 1 : 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
           >
@@ -303,6 +345,7 @@ const Hero = () => {
                   position: { xs: 'relative', md: 'absolute' },
                   bottom: { md: 24 },
                   left: { md: -36 },
+                  maxWidth: { md: 300 },
                   mt: { xs: 2, md: 0 },
                   px: 2.25,
                   py: 1.75,
@@ -331,7 +374,7 @@ const Hero = () => {
                   Now building
                 </Typography>
                 <Typography sx={{ fontSize: '0.9rem', fontWeight: 600, color: 'text.primary' }}>
-                  Agentic workflows — N8N + local LLMs
+                  {profile.nowBuilding}
                 </Typography>
               </Box>
             </Box>
